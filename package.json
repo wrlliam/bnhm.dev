@@ -1,0 +1,43 @@
+{
+  "name": "bnhm.dev",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@icons-pack/react-simple-icons": "^13.5.0",
+    "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
+    "@next/mdx": "^15.4.2",
+    "@nouance/payload-better-fields-plugin": "^2.0.2",
+    "@payloadcms/db-postgres": "^3.48.0",
+    "@payloadcms/next": "^3.48.0",
+    "@payloadcms/plugin-form-builder": "^3.48.0",
+    "@payloadcms/plugin-redirects": "payloadcms/plugin-redirects",
+    "@payloadcms/plugin-search": "^3.48.0",
+    "@payloadcms/richtext-lexical": "^3.48.0",
+    "@types/mdx": "^2.0.13",
+    "graphql": "^16.11.0",
+    "lucide-react": "^0.525.0",
+    "motion": "^12.23.6",
+    "next": "15.3.5",
+    "payload": "^3.48.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "sharp": "^0.34.3",
+    "tailwind-corner-smoothing": "^1.2.0",
+    "zustand": "^5.0.6"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@tailwindcss/postcss": "^4",
+    "tailwindcss": "^4"
+  }
+}

@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap");
+@import "tailwindcss";
+
+
+:root {
+}
+
+@theme inline {
+  --color-background: #ffffff;
+  --color-accent-main: oklch(0.5465 0.2455 262.87);
+}
+
+* {
+  font-family: "Sora", sans-serif;
+  cursor: none;
+}
+
+body {
+  background: var(--background);
+  color: #000000;
+}
+
+.smooth_transition {
+  transition: 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+
+.nav_item_under::after {
+  content: "";
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  /* margin-top: -4px; */
+  height: 1px;
+  display: flex;
+  width: 0;
+  background: linear-gradient(to right, var(--color-accent-main), transparent);
+  transition: 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+
+.nav_item_under:hover::after {
+  width: 100%;
+}
