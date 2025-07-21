@@ -4,6 +4,7 @@ import { Playfair_Display } from "next/font/google";
 import { motion } from "motion/react";
 const playFairDisplay = Playfair_Display({
   style: "italic",
+  subsets: ["latin"]
 });
 
 const generalVariants = {
