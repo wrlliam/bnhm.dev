@@ -51,10 +51,10 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_GB",
     url: "https://bnhm.dev",
-    siteName: "William Banham - Developer Portfolio",
-    title: "William Banham - Full-stack Developer & Infrastructure Engineer",
+    siteName: "William Banham",
+    title: "William Banham",
     description:
-      "William Banham is a skilled full-stack developer and infrastructure engineer specializing in modern web development, DevOps, and network engineering. Available for freelance projects and consulting.",
+      "A Full-stack, Infra & Networking Engineer. Available for freelance projects and consulting.",
     images: [
       {
         url: "/banner.png",
@@ -63,19 +63,12 @@ export const metadata: Metadata = {
         alt: "William Banham - Full-stack Developer, Infrastructure & Network Engineer",
         type: "image/png",
       },
-      {
-        url: "/logo.png", // Alternative square format
-        width: 500,
-        height: 500,
-        alt: "William Banham - Developer Portfolio",
-        type: "image/png",
-      },
     ],
   },
 
   twitter: {
     card: "summary_large_image",
-    site: "@wbnhm", 
+    site: "@wbnhm",
     creator: "@wbnhm",
     title: "William Banham - Full-stack Developer & Infrastructure Engineer",
     description:
@@ -97,7 +90,6 @@ export const metadata: Metadata = {
     },
   },
 
-  
   category: "Technology",
   classification: "Professional Portfolio",
 
@@ -109,8 +101,6 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-
-  
 
   // Other metadata
   other: {
@@ -129,6 +119,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        <link rel="dns-prefetch" href="//www.google-analytics.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin=""
+        />
+        <meta name="theme-color" content="#155dfc" />
+        <meta name="msapplication-TileColor" content="#155dfc" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
+        <meta httpEquiv="X-Frame-Options" content="DENY" />
+        <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
+      </head>
       <body className={`antialiased`}>
         <Cursor />
         <Loader>{children}</Loader>
