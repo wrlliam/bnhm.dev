@@ -20,7 +20,7 @@ const generalVariants = {
 
 export default function Hero() {
   return (
-    <motion.h1 className="text-3xl flex flex-wrap gap-1">
+    <motion.h1 className=" text-2xl md:text-3xl flex flex-wrap gap-1">
       <motion.span
         variants={generalVariants}
         transition={{ delay: 2.6 }}

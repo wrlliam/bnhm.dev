@@ -84,7 +84,7 @@ export default function Loader(props: LoaderProps) {
         </motion.div>
       </motion.div>
 
-      <div className="mx-auto flex gap-[3rem] max-w-5xl px-[2rem] mt-[5rem]">
+      <div className="mx-auto flex md:flex-row flex-col gap-[3rem] max-w-5xl px-[2rem] mt-[5rem]">
         <NavigationBar />
         {props.children}
       </div>
