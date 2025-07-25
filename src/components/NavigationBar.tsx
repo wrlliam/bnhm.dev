@@ -3,7 +3,7 @@ import Image from "next/image";
 import MajourLogo from "@/assets/Major Logo.svg";
 import Link from "./Link";
 import { motion } from "motion/react";
-import { SquareArrowOutUpRight, SquareArrowUpRight } from "lucide-react";
+import { BadgeQuestionMark, SquareArrowOutUpRight, SquareArrowUpRight } from "lucide-react";
 import { SiGithub, SiInstagram } from "@icons-pack/react-simple-icons";
 
 export default function NavigationBar() {
@@ -51,6 +51,9 @@ export default function NavigationBar() {
           </Link>
           <Link className="group" href="https://github.com/wrlliam/">
             <SiGithub className="w-[15px] group-hover:fill-accent-main smooth_transition" />
+          </Link>
+          <Link className="group" href="https://linkedin.com/in/william-banham">
+            <BadgeQuestionMark className="w-[15px] group-hover:fill-accent-main smooth_transition" />
           </Link>
         </motion.div>
         <motion.a
