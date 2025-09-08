@@ -16,7 +16,7 @@ export const EXPERIENCE = [
     title: "Administrator",
     company: "Hope 4U",
     location: "On-site",
-    timeFrame: "July 2025 - Present",
+    timeFrame: "July 2025 - Sept 2025",
     description:
       "In my role at Hope 4U, I focused on data input and analysis, collaborating with teams to drive informed decision-making. My contributions led to significant improvements in operational efficiency and project outcomes, showcasing the impact of data-driven strategies in a startup environment.",
   },
