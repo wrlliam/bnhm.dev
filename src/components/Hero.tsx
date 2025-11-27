@@ -4,10 +4,10 @@ import { Playfair_Display } from "next/font/google";
 import { motion } from "motion/react";
 const playFairDisplay = Playfair_Display({
   style: "italic",
-  subsets: ["latin"]
+  subsets: ["latin"],
 });
 
-const generalVariants = {
+export const generalVariants = {
   hidden: {
     opacity: 0,
     y: 20,
@@ -42,8 +42,13 @@ export default function Hero() {
         transition={{ delay: 2.66 }}
         initial="hidden"
         animate="visable"
+        className="my-2"
       >
-        A Full-stack Developer aswell as the
+        A{" "}
+        <span className="text-yellow-500 bg-yellow-500/10 px-2 py-1 rounded-md">
+          Full-stack Developer
+        </span>{" "}
+        aswell as the
       </motion.span>
       <motion.span
         variants={generalVariants}
@@ -51,7 +56,10 @@ export default function Hero() {
         initial="hidden"
         animate="visable"
       >
-        occasional Infra & Network Engineer.
+        occasional{" "}
+        <span className="text-accent-main bg-accent-main/10 px-2 py-1 rounded-md">
+          Infra & Network Engineer.
+        </span>
       </motion.span>
     </motion.h1>
   );

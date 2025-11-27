@@ -5,6 +5,7 @@ import Image from "next/image";
 import MajorLogo from "@/assets/Major Logo.svg";
 import { useEffect, useState } from "react";
 import NavigationBar from "./NavigationBar";
+import { BackgroundBeams } from "./ui/background-beams";
 
 export type LoaderProps = {
   children: React.ReactNode | React.ReactElement;
@@ -32,6 +33,7 @@ export default function Loader(props: LoaderProps) {
   }, []);
   return (
     <div>
+     
       <motion.div
         initial={{
           height: "100vh",
@@ -41,21 +43,7 @@ export default function Loader(props: LoaderProps) {
           height: state ? "100vh" : "0%",
           //   left: state ? "0%" : "-100%",
         }}
-        transition={{
-          delay: comingInternal ? -0.05 : 0.05,
-        }}
-        className="w-[120vw] rounded-b-full  scale-[1] top-0 left-[-10%] bottom-0 right-0 overflow-hidden bg-orange-600 fixed z-[100]"
-      ></motion.div>
-      <motion.div
-        initial={{
-          height: "100vh",
-          //   left: "0%",
-        }}
-        animate={{
-          height: state ? "100vh" : "0%",
-          //   left: state ? "0%" : "-100%",
-        }}
-        className="w-[100vw] top-0 left-0 bottom-0 right-0 overflow-hidden bg-accent-main fixed z-[100]"
+        className="w-[100vw] top-0 left-0 bottom-0 right-0 overflow-hidden bg-neutral-950 fixed z-[100]"
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.5, y: 20 }}
@@ -81,6 +69,7 @@ export default function Loader(props: LoaderProps) {
               );
             })}
           </p>
+          <BackgroundBeams/>
         </motion.div>
       </motion.div>
 

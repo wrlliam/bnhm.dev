@@ -28,14 +28,14 @@ export const EXPERIENCE = [
     description:
       "I specialize in building and maintaining efficient, secure, and scalable systems for clients across various industries.",
   },
-  {
-    title: "Kitchen Assistant",
-    company: "Prezzo",
-    location: "On-site",
-    timeFrame: "June 2024 - June 2025",
-    description:
-      "Dedicated and efficient Kitchen Assistant/KP with experience in maintaining cleanliness, managing stock, and contributing to a fast-paced cooking environment.",
-  },
+  // {
+  //   title: "Kitchen Assistant",
+  //   company: "Prezzo",
+  //   location: "On-site",
+  //   timeFrame: "June 2024 - June 2025",
+  //   description:
+  //     "Dedicated and efficient Kitchen Assistant/KP with experience in maintaining cleanliness, managing stock, and contributing to a fast-paced cooking environment.",
+  // },
 ].sort((a, b) => {
   const aIsPresent = a.timeFrame.toLowerCase().includes("present");
   const bIsPresent = b.timeFrame.toLowerCase().includes("present");
@@ -128,7 +128,7 @@ export function Projects() {
           } pb-2 pt-2  px-4`}
         >
           <p className="text-[10px] opacity-60 mb-1">{z.timeFrame}</p>
-          <h1>{z.name}</h1>
+          <h1 className="font-semibold">{z.name}</h1>
           <p className="text-xs">{z.description}</p>
 
           {z.more && (
@@ -137,7 +137,7 @@ export function Projects() {
               href={z.more}
             >
               View More
-              <CornerDownRight className="text-white opacity-0  smooth_transition h-[15px] group-hover:opacity-100" />
+              <CornerDownRight className="text-white opacity-0 smooth_transition h-[15px] group-hover:opacity-100" />
             </Link>
           )}
         </div>
@@ -149,23 +149,23 @@ export function Projects() {
 export function WhatCanIdo() {
   return (
     <div className="grid grid-cols-3 gap-1 mx-4 pb-2 pt-2 text-white">
-      <WhatCanIDoCard className="bg-orange-600/40 border-orange-600/20 col-span-3 hover:rotate-[-3deg]  text-orange-600">
+      <WhatCanIDoCard className="bg-orange-600/40 border-orange-600/20 col-span-3   text-orange-600">
         Full-Stack Developer
       </WhatCanIDoCard>
-      <WhatCanIDoCard className="bg-red-600/40 border-red-600/20 col-span-2 text-red-600  hover:rotate-[1deg] ">
+      <WhatCanIDoCard className="bg-red-600/40 border-red-600/20 col-span-2 text-red-600 ">
         Infrastructure Engineer
       </WhatCanIDoCard>
-      <WhatCanIDoCard className="bg-blue-600/40 border-blue-600/20 col-span-1 text-blue-600 hover:rotate-[3deg] ">
+      <WhatCanIDoCard className="bg-blue-600/40 border-blue-600/20 col-span-1 text-blue-600">
         Network Engineer
       </WhatCanIDoCard>
 
-      <WhatCanIDoCard className="bg-pink-600/40 border-pink-600/20 col-span-1 text-pink-600  hover:rotate-[5deg] ">
+      <WhatCanIDoCard className="bg-pink-600/40 border-pink-600/20 col-span-3 text-pink-600">
         Motion Design
       </WhatCanIDoCard>
-      <WhatCanIDoCard className="bg-teal-600/40 border-teal-600/20 col-span-1 text-teal-600  hover:rotate-[-2deg] ">
+      <WhatCanIDoCard className="bg-teal-600/40 border-teal-600/20 col-span-2 text-teal-600 ">
         Content Creation
       </WhatCanIDoCard>
-      <WhatCanIDoCard className="bg-cyan-600/40 border-cyan-600/20 col-span-1 text-cyan-600  hover:rotate-[2deg] ">
+      <WhatCanIDoCard className="bg-cyan-600/40 border-cyan-600/20 col-span-1 text-cyan-600">
         Web Design
       </WhatCanIDoCard>
     </div>
@@ -179,7 +179,7 @@ export type WhatCanIDoCardProps = {
 export function WhatCanIDoCard(props: WhatCanIDoCardProps) {
   return (
     <div
-      className={`${props.className} border  scale-[1] hover:scale-[1.2] smooth_transition p-2 rounded-md`}
+      className={`${props.className} border  scale-[1] hover:scale-[1.05] smooth_transition p-2 rounded-md`}
     >
       <h1>{props.children}</h1>
     </div>
@@ -188,7 +188,7 @@ export function WhatCanIDoCard(props: WhatCanIDoCardProps) {
 
 export function ExperienceMap() {
   return (
-    <div className="flex   flex-col gap-3">
+    <div className="flex h-fit flex-col gap-3">
       {EXPERIENCE.map((z, i) => (
         <div
           key={i}
@@ -199,11 +199,7 @@ export function ExperienceMap() {
           <h1 className="font-bold">
             {z.title} @ {z.company}
           </h1>
-          {/* <div className="flex gap-2 items-center italic">
-            <p>{z.company}</p>
-            <div className="w-[10px] h-[1px] bg-black mb-[2px]"></div>
-            <p>{z.location}</p>
-          </div> */}
+    
           <p className="text-xs opacity-30">{z.timeFrame}</p>
           <p className="mt-2 text-xs">{z.description}</p>
         </div>

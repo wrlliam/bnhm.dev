@@ -8,7 +8,7 @@ import { SiGithub, SiInstagram } from "@icons-pack/react-simple-icons";
 
 export default function NavigationBar() {
   return (
-    <motion.div className=" h-fit md:h-[85vh] w-full md:w-[8rem] items-start    flex md:flex-col justify-between overflow-hidden">
+    <motion.div className="sticky inset-0 top-[10%] h-fit md:h-[85vh] w-full md:w-[8rem] items-start    flex md:flex-col justify-between overflow-hidden">
       <motion.div
         transition={{
           delay: 2.6,
@@ -26,7 +26,7 @@ export default function NavigationBar() {
         <Image
           src={MajourLogo}
           alt="Logo"
-          className="invert w-[40px]"
+          className=" w-[40px]"
           draggable={false}
         />
         <p className="uppercase text-xs">Building Dreams, Line By Line</p>
@@ -47,13 +47,13 @@ export default function NavigationBar() {
           className="flex gap-2"
         >
           <Link className="group" href="https://www.instagram.com/will_banha/">
-            <SiInstagram className="w-[15px] group-hover:fill-accent-main smooth_transition" />
+            <SiInstagram className="w-[15px] smooth_transition" />
           </Link>
           <Link className="group" href="https://github.com/wrlliam/">
-            <SiGithub className="w-[15px] group-hover:fill-accent-main smooth_transition" />
+            <SiGithub className="w-[15px]  smooth_transition" />
           </Link>
           <Link className="group" href="https://linkedin.com/in/william-banham">
-            <BadgeQuestionMark className="w-[15px] group-hover:fill-accent-main smooth_transition" />
+            <BadgeQuestionMark className="w-[15px] smooth_transition" />
           </Link>
         </motion.div>
         <motion.a

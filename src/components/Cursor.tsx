@@ -128,18 +128,18 @@ export default function CursorFollower() {
     <div
       className={`
         fixed top-0 left-0 pointer-events-none z-50
-        transition-all ease-out duration-200
-        animate-in fade-in zoom-in-95 duration-300
+        transition-all ease-out 
+        animate-in fade-in zoom-in-95 duration-300 
         ${getSize()}
         ${getOpacity()}
         ${
           isClicked
             ? "bg-gradient-to-br from-blue-500/70 via-purple-500/70 to-pink-500/70 shadow-lg shadow-purple-500/40"
             : isHoveringLink
-            ? "bg-gradient-to-br from-green-400/60 via-blue-400/60 to-purple-400/60 shadow-lg shadow-blue-400/30"
-            : isOnScreen
-            ? "bg-gradient-to-br from-blue-400/60 via-purple-400/60 to-pink-400/50"
-            : "bg-gradient-to-br from-gray-400/40 via-gray-300/30 to-gray-200/20"
+              ? "bg-gradient-to-br from-green-400/60 via-blue-400/60 to-purple-400/60 shadow-lg shadow-blue-400/30"
+              : isOnScreen
+                ? "bg-gradient-to-br from-blue-400/60 via-purple-400/60 to-pink-400/50"
+                : "bg-gradient-to-br from-gray-400/40 via-gray-300/30 to-gray-200/20"
         }
         rounded-full backdrop-blur-sm border border-white/20
       `}
@@ -151,10 +151,10 @@ export default function CursorFollower() {
         boxShadow: isClicked
           ? "0 0 25px rgba(139, 69, 219, 0.5), 0 0 50px rgba(59, 130, 246, 0.3)"
           : isHoveringLink
-          ? "0 0 20px rgba(59, 130, 246, 0.4), 0 0 35px rgba(34, 197, 94, 0.2)"
-          : isOnScreen
-          ? "0 0 12px rgba(139, 69, 219, 0.25)"
-          : "0 0 6px rgba(107, 114, 128, 0.15)",
+            ? "0 0 20px rgba(59, 130, 246, 0.4), 0 0 35px rgba(34, 197, 94, 0.2)"
+            : isOnScreen
+              ? "0 0 12px rgba(139, 69, 219, 0.25)"
+              : "0 0 6px rgba(107, 114, 128, 0.15)",
       }}
     >
       {/* Inner glow effect */}
@@ -165,8 +165,8 @@ export default function CursorFollower() {
             isClicked
               ? "bg-gradient-to-br from-white/30 to-transparent animate-pulse"
               : isHoveringLink
-              ? "bg-gradient-to-br from-white/25 to-transparent"
-              : "bg-white/10"
+                ? "bg-gradient-to-br from-white/25 to-transparent"
+                : "bg-white/10"
           }
         `}
       />
