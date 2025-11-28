@@ -54,7 +54,7 @@ export function ColModuleExperience() {
     <div className="flex flex-col w-full mt-[3rem]">
       <motion.h1
         variants={generalVariants}
-        transition={{ delay: 2.72}}
+        transition={{ delay: 2.72 }}
         initial="hidden"
         animate="visable"
         className="uppercase text-xs opacity-60"
@@ -113,6 +113,14 @@ export function ColModuleAbout() {
         animate="visable"
         className="flex flex-col relative mt-3  bg-neutral-900/20 p-3 rounded-md"
       >
+        <GlowingEffect
+          spread={40}
+          glow={true}
+          disabled={false}
+          className=""
+          proximity={64}
+          inactiveZone={0.01}
+        />
         <p className="text-sm">
           Current finalist in{" "}
           <LinkPreview url="https://www.worldskillsuk.org">
