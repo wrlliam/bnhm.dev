@@ -122,7 +122,7 @@ export function ColModuleAbout() {
           inactiveZone={0.01}
         />
         <p className="text-sm">
-          Current finalist in{" "}
+          Silver finalist at{" "}
           <LinkPreview url="https://www.worldskillsuk.org">
             WorldSkills UK
           </LinkPreview>{" "}
