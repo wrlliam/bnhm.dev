@@ -51,7 +51,7 @@ const generalVariants = {
 
 export function ColModuleExperience() {
   return (
-    <div className="flex flex-col w-full mt-[3rem]">
+    <div className="flex flex-col w-full mt-12">
       <motion.h1
         variants={generalVariants}
         transition={{ delay: 2.72 }}
@@ -61,7 +61,7 @@ export function ColModuleExperience() {
       >
         My Experience
       </motion.h1>
-      <div className="flex flex-col gap-[2rem] mt-3">
+      <div className="flex flex-col gap-8 mt-3">
         {EXPERIENCE.map((exp, index) => (
           <motion.div
             variants={generalVariants}
@@ -96,7 +96,7 @@ export function ColModuleExperience() {
 
 export function ColModuleAbout() {
   return (
-    <div className="flex flex-col w-full mt-[3rem]">
+    <div className="flex flex-col w-full mt-12">
       <motion.h1
         className="uppercase text-xs opacity-60"
         variants={generalVariants}

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import Loader from "@/components/Loader";
 import Cursor from "@/components/Cursor";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bnhm.dev"),
@@ -137,6 +137,11 @@ export default function RootLayout({
         <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
       </head>
       <body className={`antialiased`}>
+        <Script
+          src="https://analytics.bnhm.systems/api/script.js"
+          data-site-id="2c0a05deb069"
+          defer
+        />
         <Cursor />
         <Loader>{children}</Loader>
       </body>
