@@ -137,13 +137,13 @@ export default function RootLayout({
         <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
       </head>
       <body className={`antialiased`}>
+        <Cursor />
+        <Loader>{children}</Loader>
         <Script
           src="https://analytics.bnhm.systems/api/script.js"
           data-site-id="2c0a05deb069"
           defer
         />
-        <Cursor />
-        <Loader>{children}</Loader>
       </body>
     </html>
   );
