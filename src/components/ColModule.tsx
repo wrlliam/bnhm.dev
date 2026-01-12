@@ -76,6 +76,14 @@ export const PROJECTS = [
 
 export const EXPERIENCE = [
   {
+    title: "Temporary Retail Assistant",
+    company: "Sainsbury's",
+    location: "On-site",
+    timeFrame: "Nov 2025 - Jan 2026",
+    description:
+      "Working a range of positions, from warehouse to store floor. Trained and proficient at vital skills required to ensure stock is full, in date and provide a welcoming and good customer experience.",
+  },
+  {
     title: "Temporary Administrator",
     company: "Hope 4U",
     location: "On-site",
@@ -162,7 +170,7 @@ function ProjectCard({ project, index }: any) {
       >
         <Link />
       </motion.span>
-      <span className="text-sm flex gap-2 mb-1 mt-2">
+      <span className="text-sm flex flex-wrap gap-2 mb-1 mt-2">
         {project.tags.map((tag: string, index:number) => {
           const color = TAG_COLORS[tag] || {
             bg: "bg-neutral-700/10",
