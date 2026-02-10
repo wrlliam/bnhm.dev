@@ -72,6 +72,7 @@ export default function SubModule() {
   return (
     <div className="flex  flex-col md:flex-row gap-3 mt-[2rem]">
       <motion.div
+      id="experience"
         variants={generalVariants}
         transition={{ delay: 2.72 }}
         initial="hidden"
@@ -119,7 +120,7 @@ export default function SubModule() {
 
 export function Projects() {
   return (
-    <div className="flex   flex-col gap-3">
+    <div className="flex   flex-col gap-3" id="projects">
       {PROJECTS.map((z, i) => (
         <div
           key={z.name}

@@ -6,6 +6,7 @@ import {
 } from "@/components/ColModule";
 import Hero from "@/components/Hero";
 import NavigationBar from "@/components/NavigationBar";
+import Sectionbar from "@/components/SectionsBar";
 import SubModule from "@/components/SubModule";
 
 export default function Root() {
@@ -14,8 +15,9 @@ export default function Root() {
       <Hero />
       {/* <SubModule /> */}
       <ColModuleAbout />
-      <ColModuleProjects />
+      {/* <Sectionbar /> */}
       <ColModuleExperience />
+      <ColModuleProjects />
     </div>
   );
 }

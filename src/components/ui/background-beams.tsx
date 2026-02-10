@@ -61,7 +61,7 @@ export const BackgroundBeams = React.memo(
       <div
         className={cn(
           "absolute inset-0 flex h-full w-full items-center justify-center [mask-repeat:no-repeat] [mask-size:40px]",
-          className
+          className,
         )}
       >
         <svg
@@ -112,14 +112,14 @@ export const BackgroundBeams = React.memo(
                   delay: Math.random() * 0.5,
                 }}
               >
-                <stop stopColor="#dd7bbb" stopOpacity="0"></stop>
-                <stop offset="2%" stopColor="#dd7bbb"></stop>
-                <stop offset="30%" stopColor="#dd7bbb"></stop>
-                <stop offset="45%" stopColor="#4c7894"></stop>
-                <stop offset="60%" stopColor="#d79f1e"></stop>
-                <stop offset="75%" stopColor="#5a922c"></stop>
-                <stop offset="92%" stopColor="#5a922c"></stop>
-                <stop offset="100%" stopColor="#5a922c" stopOpacity="0"></stop>
+                <stop stopColor="#104e64" stopOpacity="0"></stop>
+                <stop offset="2%" stopColor="#104e64"></stop>
+                <stop offset="30%" stopColor="#005f5a"></stop>
+                <stop offset="45%" stopColor="#005f5a"></stop>
+                <stop offset="60%" stopColor="#312c85"></stop>
+                <stop offset="75%" stopColor="#312c85"></stop>
+                <stop offset="92%" stopColor="#861043"></stop>
+                <stop offset="100%" stopColor="#861043" stopOpacity="0"></stop>
               </motion.linearGradient>
             ))}
 

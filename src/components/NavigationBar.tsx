@@ -26,7 +26,7 @@ export default function NavigationBar() {
         <Image
           src={MajourLogo}
           alt="Logo"
-          className=" w-[40px]"
+          className=" w-[40px] invert"
           draggable={false}
         />
         <p className="uppercase text-xs">Building Dreams, Line By Line</p>

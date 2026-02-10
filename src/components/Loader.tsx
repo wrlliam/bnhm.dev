@@ -43,7 +43,7 @@ export default function Loader(props: LoaderProps) {
           height: state ? "100vh" : "0%",
           //   left: state ? "0%" : "-100%",
         }}
-        className="w-[100vw] top-0 left-0 bottom-0 right-0 overflow-hidden bg-neutral-950 fixed z-[100]"
+        className="w-[100vw] top-0 left-0 bottom-0 right-0 overflow-hidden bg-gray-100 text-black fixed z-[100]"
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.5, y: 20 }}
@@ -54,8 +54,8 @@ export default function Loader(props: LoaderProps) {
           }}
           className="flex w-screen flex-col h-screen items-center justify-center"
         >
-          <Image src={MajorLogo} width={100} alt="Logo" draggable={false} />
-          <p className="text-white mt-3 text-xs flex gap-1">
+          <Image src={MajorLogo} width={100} alt="Logo" className="invert" draggable={false} />
+          <p className="text-black mt-3 text-xs flex gap-1">
             {SLOGAN.split(" ").map((z, i) => {
               return (
                 <motion.span

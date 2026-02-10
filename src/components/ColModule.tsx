@@ -76,6 +76,14 @@ export const PROJECTS = [
 
 export const EXPERIENCE = [
   {
+    title: "Work Experience",
+    company: "Rolls-Royce",
+    location: "On-site",
+    timeFrame: "Feb 2026 - Feb 2026",
+    description:
+      "Applied advanced data analytics skills to forecast and predict real operational data for Rolls-Royce projects. Gained insight into how a multi-billion-pound engineering company operated by observing cross-department workflows and decision processes. Supported the in-house IT and support teams by assisting with data-driven tasks and technical problem solving. Learned how projects moved from planning to delivery and used internal digital tools that powered major sales and engine development programs.",
+  },
+  {
     title: "Temporary Retail Assistant",
     company: "Sainsbury's",
     location: "On-site",
@@ -145,7 +153,7 @@ function ProjectCard({ project, index }: any) {
       animate="visable"
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
-      className="flex flex-col relative bg-neutral-900/20 p-3 rounded-md group"
+      className="flex flex-col relative bg-gray-200/20 p-3 rounded-md group"
       target="_blank"
       rel="noopener noreferrer"
     >
@@ -171,7 +179,7 @@ function ProjectCard({ project, index }: any) {
         <Link />
       </motion.span>
       <span className="text-sm flex flex-wrap gap-2 mb-1 mt-2">
-        {project.tags.map((tag: string, index:number) => {
+        {project.tags.map((tag: string, index: number) => {
           const color = TAG_COLORS[tag] || {
             bg: "bg-neutral-700/10",
             text: "text-neutral-400",
@@ -211,7 +219,7 @@ export function ColModuleExperience() {
             initial="hidden"
             animate="visable"
             key={index}
-            className="flex flex-col relative  bg-neutral-900/20 p-3 rounded-md"
+            className="flex flex-col relative  bg-gray-200/20 p-3 rounded-md"
           >
             <GlowingEffect
               key={index}
@@ -274,7 +282,7 @@ export function ColModuleAbout() {
         transition={{ delay: 2.72 }}
         initial="hidden"
         animate="visable"
-        className="flex flex-col relative mt-3  bg-neutral-900/20 p-3 rounded-md"
+        className="flex flex-col relative mt-3  bg-gray-200/20 p-3 rounded-md"
       >
         <GlowingEffect
           spread={40}
@@ -285,14 +293,16 @@ export function ColModuleAbout() {
           inactiveZone={0.01}
         />
         <p className="text-sm">
-          Silver finalist at{" "}
-          <LinkPreview url="https://www.worldskillsuk.org">
-            WorldSkills UK
-          </LinkPreview>{" "}
-          and student. Full-stack developer with eight years’ experience
-          building web applications across front-end and back-end. I also run a
-          personal homelab, managing servers, containers and private-cloud
-          infrastructure to support my interest in infrastructure and systems.
+          I'm a fully self-taught in{" "}
+          <LinkPreview url="https://github.com/wrllima">
+            both software development and infrastructure engineering
+          </LinkPreview>
+          , with 5 years of experience building and managing virtual
+          infrastructure on personal equipment & 8 years in software development. My half a decade of experience in
+          freelance consulting, has delivered reliable, high-performance
+          solutions for clients across industries. A national silver finalist in Web Development at the WorldSkills
+          UK competition. Always striving to improve methods, practices, and
+          outcomes for the better.
         </p>
       </motion.div>
     </div>

@@ -48,7 +48,7 @@ export default function Hero() {
         <span className="text-yellow-500 bg-yellow-500/10 px-2 py-1 rounded-md">
           Full-stack Developer
         </span>{" "}
-        aswell as the
+        and an
       </motion.span>
       <motion.span
         variants={generalVariants}

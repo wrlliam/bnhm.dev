@@ -49,7 +49,8 @@
 }
 
 body {
-  @apply text-white bg-neutral-950;
+  /* @apply text-black bg-neutral-950; */
+  @apply text-black bg-white;
 }
 
 .smooth_transition {

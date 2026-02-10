@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useStore } from "zustand";
 import { mousePos, loaderStore } from "@/lib/stores";
+import { img } from "motion/react-client";
 
 export default function CursorFollower() {
   const posX = useStore(mousePos, (state) => state.posX);
@@ -31,7 +32,7 @@ export default function CursorFollower() {
         setPosY(e.clientY);
       });
     },
-    [setPosX, setPosY]
+    [setPosX, setPosY],
   );
 
   const handleMouseDown = useCallback(() => {
@@ -65,7 +66,6 @@ export default function CursorFollower() {
 
   useEffect(() => {
     if (!isVisible) return;
-
     document.addEventListener("mousemove", handleMouseMove, { passive: true });
     document.addEventListener("mousedown", handleMouseDown, { passive: true });
     document.addEventListener("mouseup", handleMouseUp, { passive: true });
@@ -101,75 +101,67 @@ export default function CursorFollower() {
 
   if (isLoading || !isVisible) return null;
 
-  const getSize = () => {
-    if (!isOnScreen) return "w-1 h-1";
-    if (isClicked) return "w-7 h-7";
-    if (isHoveringLink) return "w-8 h-8";
-    return "w-4 h-4";
-  };
-
   const getOpacity = () => {
     if (!isOnScreen) return "opacity-30";
-    if (isClicked) return "opacity-100";
-    if (isHoveringLink) return "opacity-90";
-    return "opacity-70";
+    return "opacity-100";
   };
-
-  const getCenterOffset = () => {
-    if (!isOnScreen) return 2;
-    if (isClicked) return 10;
-    if (isHoveringLink) return 6;
-    return 4;
-  };
-
-  const centerOffset = getCenterOffset();
 
   return (
-    <div
-      className={`
-        fixed top-0 left-0 pointer-events-none z-50
-        transition-all ease-out 
-        animate-in fade-in zoom-in-95 duration-300 
-        ${getSize()}
-        ${getOpacity()}
-        ${
-          isClicked
-            ? "bg-gradient-to-br from-blue-500/70 via-purple-500/70 to-pink-500/70 shadow-lg shadow-purple-500/40"
-            : isHoveringLink
-              ? "bg-gradient-to-br from-green-400/60 via-blue-400/60 to-purple-400/60 shadow-lg shadow-blue-400/30"
-              : isOnScreen
-                ? "bg-gradient-to-br from-blue-400/60 via-purple-400/60 to-pink-400/50"
-                : "bg-gradient-to-br from-gray-400/40 via-gray-300/30 to-gray-200/20"
-        }
-        rounded-full backdrop-blur-sm border border-white/20
-      `}
-      style={{
-        transform: `translate(${posX - centerOffset}px, ${
-          posY - centerOffset
-        }px)`,
-        willChange: "transform, width, height, opacity",
-        boxShadow: isClicked
-          ? "0 0 25px rgba(139, 69, 219, 0.5), 0 0 50px rgba(59, 130, 246, 0.3)"
-          : isHoveringLink
-            ? "0 0 20px rgba(59, 130, 246, 0.4), 0 0 35px rgba(34, 197, 94, 0.2)"
-            : isOnScreen
-              ? "0 0 12px rgba(139, 69, 219, 0.25)"
-              : "0 0 6px rgba(107, 114, 128, 0.15)",
-      }}
-    >
-      {/* Inner glow effect */}
-      <div
-        className={`
-          absolute inset-0 rounded-full 
-          ${
-            isClicked
-              ? "bg-gradient-to-br from-white/30 to-transparent animate-pulse"
-              : isHoveringLink
-                ? "bg-gradient-to-br from-white/25 to-transparent"
-                : "bg-white/10"
-          }
-        `}
+    <>
+      <img
+        src={`/${isHoveringLink ? "cursor-clicked.png" : "cursor.png"}`}
+        className="fixed top-0 left-0 pointer-events-none z-50 w-[35px] h-[35px]"
+        style={{
+          transform: `translate(${posX + 7}px, ${posY}px) rotate(-15deg) translate(-50%, -50%)`,
+          transformOrigin: "center",
+        }}
       />
-    </div>
+    </>
+    // <div
+    //   className={`
+    //     fixed top-0 left-0 pointer-events-none z-50
+    //     transition-all ease-out
+    //     animate-in fade-in zoom-in-95 duration-300
+    //     ${getSize()}
+    //     ${getOpacity()}
+    //     ${
+    //       isClicked
+    //         ? "bg-gradient-to-br from-blue-500/70 via-purple-500/70 to-pink-500/70 shadow-lg shadow-purple-500/40"
+    //         : isHoveringLink
+    //           ? "bg-gradient-to-br from-green-400/60 via-blue-400/60 to-purple-400/60 shadow-lg shadow-blue-400/30"
+    //           : isOnScreen
+    //             ? "bg-gradient-to-br from-blue-400/60 via-purple-400/60 to-pink-400/50"
+    //             : "bg-gradient-to-br from-gray-400/40 via-gray-300/30 to-gray-200/20"
+    //     }
+    //     rounded-full backdrop-blur-sm border border-white/20
+    //   `}
+    //   style={{
+    //     transform: `translate(${posX - centerOffset}px, ${
+    //       posY - centerOffset
+    //     }px)`,
+    //     willChange: "transform, width, height, opacity",
+    //     boxShadow: isClicked
+    //       ? "0 0 25px rgba(139, 69, 219, 0.5), 0 0 50px rgba(59, 130, 246, 0.3)"
+    //       : isHoveringLink
+    //         ? "0 0 20px rgba(59, 130, 246, 0.4), 0 0 35px rgba(34, 197, 94, 0.2)"
+    //         : isOnScreen
+    //           ? "0 0 12px rgba(139, 69, 219, 0.25)"
+    //           : "0 0 6px rgba(107, 114, 128, 0.15)",
+    //   }}
+    // >
+    //   {/* Inner glow effect */}
+    //   <div
+    //     className={`
+    //       absolute inset-0 rounded-full
+    //       ${
+    //         isClicked
+    //           ? "bg-gradient-to-br from-white/30 to-transparent animate-pulse"
+    //           : isHoveringLink
+    //             ? "bg-gradient-to-br from-white/25 to-transparent"
+    //             : "bg-white/10"
+    //       }
+    //     `}
+    //   />
+    // </div>
   );
 }
