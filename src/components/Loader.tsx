@@ -55,7 +55,7 @@ export default function Loader(props: LoaderProps) {
           className="flex w-screen flex-col h-screen items-center justify-center"
         >
           <Image src={MajorLogo} width={100} alt="Logo" className="invert" draggable={false} />
-          <p className="text-black mt-3 text-xs flex gap-1">
+          {/* <p className="text-black mt-3 text-xs flex gap-1">
             {SLOGAN.split(" ").map((z, i) => {
               return (
                 <motion.span
@@ -68,7 +68,7 @@ export default function Loader(props: LoaderProps) {
                 </motion.span>
               );
             })}
-          </p>
+          </p> */}
           <BackgroundBeams/>
         </motion.div>
       </motion.div>

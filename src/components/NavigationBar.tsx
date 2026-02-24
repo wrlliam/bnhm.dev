@@ -8,7 +8,7 @@ import { SiGithub, SiInstagram } from "@icons-pack/react-simple-icons";
 
 export default function NavigationBar() {
   return (
-    <motion.div className="sticky inset-0 top-[10%] h-fit md:h-[85vh] w-full md:w-[8rem] items-start    flex md:flex-col justify-between overflow-hidden">
+    <motion.div className="md:sticky bg-transparent inset-0 top-[10%] h-fit md:h-[85vh] w-full md:w-[8rem] items-start    flex md:flex-col justify-between overflow-hidden">
       <motion.div
         transition={{
           delay: 2.6,

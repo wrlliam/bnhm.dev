@@ -110,7 +110,7 @@ export default function CursorFollower() {
     <>
       <img
         src={`/${isHoveringLink ? "cursor-clicked.png" : "cursor.png"}`}
-        className="fixed top-0 left-0 pointer-events-none z-50 w-[35px] h-[35px]"
+        className="fixed top-0 left-0 pointer-events-none z-50 w-[35px] h-[35px] custom-cursor"
         style={{
           transform: `translate(${posX + 7}px, ${posY}px) rotate(-15deg) translate(-50%, -50%)`,
           transformOrigin: "center",

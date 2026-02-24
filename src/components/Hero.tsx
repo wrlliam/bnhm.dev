@@ -56,7 +56,6 @@ export default function Hero() {
         initial="hidden"
         animate="visable"
       >
-        occasional{" "}
         <span className="text-accent-main bg-accent-main/10 px-2 py-1 rounded-md">
           Infra & Network Engineer.
         </span>

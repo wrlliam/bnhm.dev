@@ -12,21 +12,39 @@ const TAG_COLORS: Record<string, { bg: string; text: string }> = {
   "Next.js": { bg: "bg-blue-500/10", text: "text-blue-500" },
   TypeScript: { bg: "bg-blue-700/10", text: "text-blue-700" },
   "Tailwind CSS": { bg: "bg-teal-500/10", text: "text-teal-500" },
+  GraphQL: { bg: "bg-green-500/10", text: "text-green-500" },
   Drizzle: { bg: "bg-green-500/10", text: "text-green-500" },
   SQlite: { bg: "bg-orange-500/10", text: "text-orange-500" },
   "Better-Auth": { bg: "bg-purple-500/10", text: "text-purple-500" },
   "Polar.sh": { bg: "bg-pink-500/10", text: "text-pink-500" },
   APIs: { bg: "bg-yellow-500/10", text: "text-yellow-500" },
+  Bun: { bg: "bg-yellow-500/10", text: "text-yellow-500" },
   Linux: { bg: "bg-green-600/10", text: "text-green-700" },
   Networking: { bg: "bg-cyan-500/10", text: "text-cyan-500" },
-  Virtualization: { bg: "bg-purple-500/10", text: "text-purple-500" },
   Docker: { bg: "bg-blue-400/10", text: "text-blue-400" },
   Proxmox: { bg: "bg-orange-600/10", text: "text-orange-600" },
+  Virtualisation: { bg: "bg-orange-600/10", text: "text-orange-600" },
   Bash: { bg: "bg-green-700/10", text: "text-green-700" },
   Databases: { bg: "bg-rose-500/10", text: "text-rose-500" },
 };
 
 export const PROJECTS = [
+  {
+    title: "Digi",
+    description:
+      "a PaaS for hosting microservices, built using modern technologies and methodologies. It features a user-friendly interface for managing applications, seamless deployment processes, and robust infrastructure support. With a focus on scalability and reliability, Digi empowers developers to easily deploy and manage their microservices in a cloud environment.",
+      href: "https://github.com/rundigi",
+    tags: [
+      "GraphQL",
+      "Next.js",
+      "Bun",
+      "TypeScript",
+      "Tailwind CSS",
+      "Docker",
+      "Virtualisation",
+      "Databases"
+    ],
+  },
   {
     title: "Homelab",
     description:
@@ -35,7 +53,7 @@ export const PROJECTS = [
     tags: [
       "Linux",
       "Networking",
-      "Virtualization",
+      "Virtualisation",
       "Docker",
       "Proxmox",
       "Bash",
@@ -294,7 +312,7 @@ export function ColModuleAbout() {
         />
         <p className="text-sm">
           I'm a fully self-taught in{" "}
-          <LinkPreview url="https://github.com/wrllima">
+          <LinkPreview url="https://github.com/wrlliam">
             both software development and infrastructure engineering
           </LinkPreview>
           , with 5 years of experience building and managing virtual

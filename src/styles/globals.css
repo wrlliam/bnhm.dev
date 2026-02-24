@@ -48,6 +48,16 @@
   cursor: none;
 }
 
+@media screen and (max-width: 400px) {
+  * {
+    cursor: default !important;
+  }
+
+  .custom-cursor {
+    display: none;
+  }
+}
+
 body {
   /* @apply text-black bg-neutral-950; */
   @apply text-black bg-white;
