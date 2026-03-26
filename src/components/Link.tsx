@@ -99,12 +99,13 @@ const LinkPreview = ({
           {children}
         </HoverCardPrimitive.Trigger>
 
-        <HoverCardPrimitive.Content
-          className="[transform-origin:var(--radix-hover-card-content-transform-origin)] z-[200]"
-          side={side}
-          align="start"
-          sideOffset={10}
-        >
+        <HoverCardPrimitive.Portal>
+          <HoverCardPrimitive.Content
+            className="[transform-origin:var(--radix-hover-card-content-transform-origin)] z-[200]"
+            side={side}
+            align="start"
+            sideOffset={10}
+          >
           <AnimatePresence>
             {isOpen && (
               <motion.div
@@ -141,7 +142,8 @@ const LinkPreview = ({
               </motion.div>
             )}
           </AnimatePresence>
-        </HoverCardPrimitive.Content>
+          </HoverCardPrimitive.Content>
+        </HoverCardPrimitive.Portal>
       </HoverCardPrimitive.Root>
     </>
   );
