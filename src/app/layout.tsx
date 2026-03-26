@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import Loader from "@/components/Loader";
-import Cursor from "@/components/Cursor";
+
 import Script from "next/script";
 
 export const metadata: Metadata = {
@@ -53,8 +53,7 @@ export const metadata: Metadata = {
     url: "https://bnhm.dev",
     siteName: "William Banham",
     title: "William Banham",
-    description:
-      "A Full-stack, Infra & Networking Engineer. Available for freelance projects and consulting.",
+    description: "A Full-stack, Infra & Networking Engineer.",
     images: [
       {
         url: "/banner.png",
@@ -102,9 +101,8 @@ export const metadata: Metadata = {
     telephone: false,
   },
 
-  // Other metadata
   other: {
-    "contact:email": "will@bnhm.dev", // Replace with your actual email
+    "contact:email": "will@bnhm.dev",
     "geo.region": "GB",
     "geo.placename": "United Kingdom",
     "profile:first_name": "William",
@@ -133,11 +131,9 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#155dfc" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-        <meta httpEquiv="X-Frame-Options" content="DENY" />
         <meta httpEquiv="X-XSS-Protection" content="1; mode=block" />
       </head>
       <body className={`antialiased`}>
-        <Cursor />
         <Loader>{children}</Loader>
         <Script
           src="https://analytics.bnhm.systems/api/script.js"

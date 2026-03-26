@@ -1,79 +1,59 @@
 "use client";
-import Image from "next/image";
-import MajourLogo from "@/assets/Major Logo.svg";
-import Link from "./Link";
-import { motion } from "motion/react";
-import { BadgeQuestionMark, SquareArrowOutUpRight, SquareArrowUpRight } from "lucide-react";
-import { SiGithub, SiInstagram } from "@icons-pack/react-simple-icons";
 
-export default function NavigationBar() {
+import { useState } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
+
+const NAV_LINKS = [
+  { label: "about", href: "#about" },
+  { label: "experience", href: "#experience" },
+  { label: "projects", href: "#projects" },
+  { label: "contact", href: "#reach-out" },
+];
+
+export default function Navbar() {
+  const { scrollY } = useScroll();
+  const bgOpacity = useTransform(scrollY, [0, 50], [0, 1]);
+  const [hovered, setHovered] = useState<number | null>(null);
+
   return (
-    <motion.div className="md:sticky bg-transparent inset-0 top-[10%] h-fit md:h-[85vh] w-full md:w-[8rem] items-start    flex md:flex-col justify-between overflow-hidden">
+    <motion.nav className="fixed top-0 left-0 right-0 z-50">
       <motion.div
-        transition={{
-          delay: 2.6,
-        }}
-        initial={{
-          x: -20,
-          opacity: 0,
-        }}
-        animate={{
-          x: 0,
-          opacity: 100,
-        }}
-        className="flex flex-col gap-3"
-      >
-        <Image
-          src={MajourLogo}
-          alt="Logo"
-          className=" w-[40px] invert"
-          draggable={false}
-        />
-        <p className="uppercase text-xs">Building Dreams, Line By Line</p>
-      </motion.div>
-      <div className="flex flex-col gap-1">
-        <motion.div
-          transition={{
-            delay: 2.8,
-          }}
-          initial={{
-            y: -10,
-            opacity: 0,
-          }}
-          animate={{
-            y: 0,
-            opacity: 100,
-          }}
-          className="flex gap-2"
+        className="absolute inset-0 bg-white/80 backdrop-blur-xs border-b border-neutral-100"
+        style={{ opacity: bgOpacity }}
+      />
+      <div className="relative max-w-[46rem] mx-auto px-6 h-14 flex items-center justify-end">
+        <div
+          className="hidden sm:flex items-center gap-1"
+          onMouseLeave={() => setHovered(null)}
         >
-          <Link className="group" href="https://www.instagram.com/will_banha/">
-            <SiInstagram className="w-[15px] smooth_transition" />
-          </Link>
-          <Link className="group" href="https://github.com/wrlliam/">
-            <SiGithub className="w-[15px]  smooth_transition" />
-          </Link>
-          <Link className="group" href="https://linkedin.com/in/william-banham">
-            <BadgeQuestionMark className="w-[15px] smooth_transition" />
-          </Link>
-        </motion.div>
-        <motion.a
-          transition={{
-            delay: 2.6,
-          }}
-          initial={{
-            y: -10,
-            opacity: 0,
-          }}
-          animate={{
-            y: 0,
-            opacity: 100,
-          }}
-          className="text-xs flex gap-2 justify-center items-center"
-          href="mailto:will@bhnm.dev"
-        >
-          will@bhnm.dev
-        </motion.a>
+          {NAV_LINKS.map((link, i) => (
+            <a
+              key={link.href}
+              href={link.href}
+              onMouseEnter={() => setHovered(i)}
+              className="relative text-xs text-neutral-400 hover:text-neutral-900 smooth_transition px-3 py-1.5"
+            >
+              <AnimatePresence>
+                {hovered === i && (
+                  <motion.span
+                    layoutId="nav-indicator"
+                    className="absolute inset-0 bg-neutral-900/[0.06] rounded-md"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{
+                      layout: { type: "spring", stiffness: 400, damping: 30 },
+                      opacity: { duration: 0.15 },
+                      scale: { duration: 0.15 },
+                    }}
+                  />
+                )}
+              </AnimatePresence>
+              <span className="relative z-10">{link.label}</span>
+            </a>
+          ))}
+        </div>
       </div>
-    </motion.div>
+    </motion.nav>
   );
 }
