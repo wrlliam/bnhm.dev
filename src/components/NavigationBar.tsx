@@ -31,13 +31,13 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               onMouseEnter={() => setHovered(i)}
-              className="relative text-xs text-neutral-400 hover:text-neutral-900 smooth_transition px-3 py-1.5"
+              className={`relative text-xs smooth_transition px-3 py-1.5 ${hovered === i ? `text-accent-main` : `text-neutral-400`}`}
             >
               <AnimatePresence>
                 {hovered === i && (
                   <motion.span
                     layoutId="nav-indicator"
-                    className="absolute inset-0 bg-neutral-900/[0.06] rounded-md"
+                    className="absolute inset-0 bg-accent-main/20 rounded-md"
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}

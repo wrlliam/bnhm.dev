@@ -28,7 +28,7 @@ export const PROJECTS: Project[] = [
   {
     name: "Stratum Shop",
     description: "E-commerce platform for selling 3D printed products.",
-    github: "https://github.com/wrlliam/stratum-shop",
+    github: "https://stratum3d.co.uk",
   },
   {
     name: "Mylo",
