@@ -1,17 +1,18 @@
 # Stage 1: Install dependencies
 FROM node:20-alpine AS deps
-RUN apk add --no-cache libc6-compat
+# Install libc6-compat and git for dependencies that pull from GitHub repositories
+RUN apk add --no-cache libc6-compat git
 WORKDIR /app
 
 # Copy dependency manifests
 COPY package.json package-lock.json* yarn.lock* pnpm-lock.yaml* ./
 
-# Install dependencies based on available lockfile
+# Install dependencies with legacy peer deps enabled for npm
 RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
+  if [ -f yarn.lock ]; then yarn install; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm install; \
+  elif [ -f package-lock.json ]; then npm install --legacy-peer-deps; \
+  else npm install --legacy-peer-deps; \
   fi
 
 # Stage 2: Build the application
@@ -24,8 +25,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN \
   if [ -f yarn.lock ]; then yarn run build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
+  elif [ -f pnpm-lock.yaml ]; then pnpm run build; \
   else npm run build; \
   fi
 

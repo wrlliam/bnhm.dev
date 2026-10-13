@@ -38,11 +38,11 @@ export default function Root() {
 
       <motion.hr {...stagger(4)} className="border-neutral-100 mt-16 mb-16" />
 
-      <motion.div {...stagger(5)} className="relative z-10">
+      {/* <motion.div {...stagger(5)} className="relative z-10">
         <Projects />
-      </motion.div>
+      </motion.div> */}
 
-      <motion.div {...stagger(6)} className="relative z-10">
+      <motion.div {...stagger(5)} className="relative z-10">
         <Footer />
       </motion.div>
     </div>

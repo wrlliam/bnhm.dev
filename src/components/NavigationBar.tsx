@@ -6,7 +6,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "motion/react";
 const NAV_LINKS = [
   { label: "about", href: "#about" },
   { label: "experience", href: "#experience" },
-  { label: "projects", href: "#projects" },
+  // { label: "projects", href: "#projects" },
   { label: "contact", href: "#reach-out" },
 ];
 
