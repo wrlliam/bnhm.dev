@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  bnhm-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: bnhm-dev:latest
+    container_name: bnhm-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    # If your project requires environment variables at runtime, 
+    # create a .env file and uncomment the lines below:
+    # env_file:
+    #   - .env

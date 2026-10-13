@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["api.microlink.io"],
   },
+  output: "standalone"
 };
 
 export default nextConfig;
