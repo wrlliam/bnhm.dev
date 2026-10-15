@@ -16,6 +16,7 @@ export default function About() {
           competition. I enjoy building things that are fast, reliable, and
           thoughtfully designed.
         </p>
+        <p>First ever Skills Fest gold winner in digital, an national college level competition in vast range of subjects.</p>
       </div>
     </section>
   );
