@@ -472,3 +472,10 @@ html.lenis body {
   background: var(--bg);
   border: 1px solid var(--decor);
 }
+
+/* Pause CSS loops while the tab is hidden. */
+.tab-hidden *,
+.tab-hidden *::before,
+.tab-hidden *::after {
+  animation-play-state: paused !important;
+}

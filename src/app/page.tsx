@@ -8,6 +8,7 @@ import { Education } from "@/components/education/education";
 import { Stack } from "@/components/stack/stack";
 import { Contact } from "@/components/contact/contact";
 import { Footer } from "@/components/footer/footer";
+import { MotionBoot } from "@/motion/motion-boot";
 
 export default function Home() {
   return (
@@ -27,6 +28,7 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
+      <MotionBoot />
     </>
   );
 }
