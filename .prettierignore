@@ -1,0 +1,6 @@
+.ai
+.next
+out
+node_modules
+package-lock.json
+src/lib/contact.generated.ts
