@@ -351,3 +351,124 @@ html.lenis body {
     animation: none !important;
   }
 }
+
+/* Theme view transition: disable the default crossfade, the toggle animates clip-path. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Sound equaliser icon: transform-only bars */
+.eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+.eq span {
+  width: 2px;
+  height: 14px;
+  background: currentColor;
+  border-radius: 1px;
+  transform-origin: bottom;
+  transform: scaleY(0.25);
+  transition: transform 0.3s var(--ease-soft);
+}
+.eq[data-on="true"] span {
+  animation: eq 0.9s ease-in-out infinite alternate;
+}
+.eq[data-on="true"] span:nth-child(2) {
+  animation-delay: -0.3s;
+  animation-duration: 0.7s;
+}
+.eq[data-on="true"] span:nth-child(3) {
+  animation-delay: -0.6s;
+  animation-duration: 1.1s;
+}
+@keyframes eq {
+  from {
+    transform: scaleY(0.3);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* Header */
+.site-header {
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: saturate(1.4) blur(12px);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid color-mix(in srgb, var(--rule) 60%, transparent);
+}
+.scroll-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--decor);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.nav-link {
+  color: var(--ink);
+  opacity: 0.78;
+  transition: opacity 0.2s var(--ease-soft);
+}
+.nav-link:hover,
+.nav-link[aria-current="true"] {
+  opacity: 1;
+}
+
+/* Rack frame */
+.rack-rail {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  width: 8px;
+  height: calc(100% - 24px);
+  fill: var(--rule);
+}
+.rack-unit {
+  transition:
+    transform 0.4s var(--ease-soft),
+    border-color 0.25s var(--ease-soft);
+}
+.rack-unit:hover,
+.rack-unit[data-active="true"] {
+  transform: translateY(-2px);
+  border-color: var(--decor);
+}
+.rack-label > span:not(.rack-role) {
+  display: inline-block;
+}
+
+/* Timeline */
+.timeline-track,
+.timeline-progress {
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: var(--rule);
+}
+.timeline-progress {
+  background: var(--decor);
+  transform-origin: top center;
+}
+.js .timeline-progress {
+  transform: scaleY(0);
+}
+.timeline-dot {
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 11px;
+  height: 11px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--decor);
+}
