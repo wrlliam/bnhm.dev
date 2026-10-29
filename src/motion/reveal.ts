@@ -49,6 +49,21 @@ export function revealFull(root: Element) {
     });
   });
 
+  // Experience line: scrubbed, scaleY only.
+  root.querySelectorAll<HTMLElement>("[data-timeline]").forEach((tl) => {
+    const line = tl.querySelector("[data-timeline-progress]");
+    if (!line) return;
+    gsap.fromTo(
+      line,
+      { scaleY: 0 },
+      {
+        scaleY: 1,
+        ease: "none",
+        scrollTrigger: { trigger: tl, start: "top 70%", end: "bottom 70%", scrub: 0.6 },
+      },
+    );
+  });
+
   batch(
     root,
     "[data-hairline]",

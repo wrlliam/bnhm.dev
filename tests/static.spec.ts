@@ -22,7 +22,7 @@ test.describe("no-JS", () => {
     await expect(page.getByRole("heading", { level: 1 })).toHaveAccessibleName(
       "William Banham",
     );
-    await expect(page.locator("[data-gate]")).toHaveCount(0);
+    await expect(page.locator("[data-gate]")).toBeHidden();
     // Every project's details are readable inline.
     await expect(page.locator("[data-work-inline]").first()).toBeVisible();
     // Nothing is hidden for animation.

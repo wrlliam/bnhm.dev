@@ -1,6 +1,5 @@
 import { rackUnits } from "@/content/stack";
 import { SectionLabel } from "@/components/ui/section-label";
-import { RackInteractions } from "./rack-interactions";
 
 const blink = ["2.4s", "3.1s", "1.9s", "2.7s", "3.6s", "2.2s"];
 
@@ -132,7 +131,6 @@ export function Rack() {
           </p>
         </div>
       </div>
-      <RackInteractions />
     </section>
   );
 }

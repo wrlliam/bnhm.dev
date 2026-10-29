@@ -1,9 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
+import { domMax, LazyMotion } from "motion/react";
 import { gsap, ScrollTrigger, useGSAP } from "./gsap";
 import { LenisProvider } from "./lenis-provider";
 import { revealFull, revealReduced } from "./reveal";
+import { runIntro } from "./intro";
+import { magneticButtons, magneticChars } from "./magnetic";
+import { Cursor } from "./cursor";
+import { WorkDetail } from "./work-detail";
+import { PageEffects } from "./page-effects";
 import { media } from "./tokens";
 
 /**
@@ -15,9 +21,17 @@ export default function MotionRoot() {
     const main = document.getElementById("main");
     if (!main) return;
     const mm = gsap.matchMedia();
-    mm.add({ motion: media.motion, reduce: media.reduce }, (ctx) => {
-      if (ctx.conditions?.reduce) revealReduced(main);
+    mm.add({ motion: media.motion, reduce: media.reduce, fine: media.fine }, (ctx) => {
+      const { reduce, fine } = ctx.conditions as { reduce: boolean; fine: boolean };
+      const intro = runIntro({ reduce });
+      const offs: Array<() => void> = [intro.cleanup];
+      if (reduce) revealReduced(main);
       else revealFull(main);
+      if (!reduce && fine) {
+        offs.push(magneticButtons());
+        offs.push(magneticChars(document.querySelector("[data-hero]"), intro.chars));
+      }
+      return () => offs.forEach((off) => off());
     });
     document.documentElement.classList.add("motion-ready");
     return () => mm.revert();
@@ -45,5 +59,12 @@ export default function MotionRoot() {
     };
   }, []);
 
-  return <LenisProvider />;
+  return (
+    <LazyMotion features={domMax} strict>
+      <LenisProvider />
+      <PageEffects />
+      <WorkDetail />
+      <Cursor />
+    </LazyMotion>
+  );
 }

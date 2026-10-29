@@ -459,9 +459,6 @@ html.lenis body {
   background: var(--decor);
   transform-origin: top center;
 }
-.js .timeline-progress {
-  transform: scaleY(0);
-}
 .timeline-dot {
   position: absolute;
   left: 0;
@@ -478,4 +475,240 @@ html.lenis body {
 .tab-hidden *::before,
 .tab-hidden *::after {
   animation-play-state: paused !important;
+}
+
+/* ---------- Gate ---------- */
+.gate {
+  display: none;
+}
+.js:not(.entered) .gate {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  color: var(--paper);
+}
+.js:not(.entered) body {
+  overflow: hidden;
+}
+.gate-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50.5%;
+  background: var(--navy-deep);
+}
+.gate-half-top {
+  top: 0;
+}
+.gate-half-bottom {
+  bottom: 0;
+}
+.gate-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  text-align: center;
+}
+.gate-count {
+  font-size: clamp(72px, 14vw, 160px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.gate-bar {
+  width: min(280px, 70vw);
+  height: 1px;
+  background: var(--navy-700);
+  overflow: hidden;
+}
+.gate-bar span {
+  display: block;
+  height: 100%;
+  background: var(--sky);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.gate-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+  visibility: hidden;
+  opacity: 0;
+}
+.gate[data-ready="true"] .gate-actions {
+  visibility: visible;
+}
+.gate :focus-visible {
+  outline-color: var(--sky);
+}
+.gate .btn-ghost:hover {
+  background: var(--navy-700);
+}
+
+/* Press feedback that composes with GSAP-owned transforms (individual `scale`). */
+.btn:active {
+  scale: 0.97;
+}
+
+html.scroll-locked,
+html.scroll-locked body {
+  overflow: hidden;
+}
+
+/* Custom cursor (fine pointers only; native cursor stays visible) */
+.cursor-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  pointer-events: none;
+}
+@media not ((hover: hover) and (pointer: fine)) {
+  .cursor-layer {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cursor-layer {
+    display: none;
+  }
+}
+.cursor-dot,
+.cursor-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 999px;
+  visibility: hidden;
+  opacity: 0;
+}
+.cursor-dot {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: var(--decor);
+}
+.cursor-ring {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border: 1px solid var(--decor);
+  background: color-mix(in srgb, var(--bg) 30%, transparent);
+}
+.cursor-label {
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* ---------- Work list ---------- */
+.work-enhanced [data-work-inline] {
+  display: none;
+}
+.work-link {
+  position: relative;
+}
+.work-row,
+.work-title,
+.work-arrow {
+  transition:
+    opacity 0.4s var(--ease-soft),
+    transform 0.5s var(--ease-soft);
+}
+@media (hover: hover) and (pointer: fine) {
+  .work-list:has(.work-row:hover) .work-row:not(:hover) {
+    opacity: 0.35;
+  }
+  .work-row:hover .work-title {
+    transform: translateX(12px);
+  }
+  .work-row:hover .work-arrow {
+    transform: rotate(45deg);
+  }
+}
+.work-link:focus-visible .work-title {
+  transform: translateX(12px);
+}
+.work-preview {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  width: 260px;
+  aspect-ratio: 32 / 22;
+  padding: 18px;
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--accent);
+  border: 1px solid var(--rule);
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+}
+.work-preview-art {
+  position: absolute;
+  inset: 18px;
+  width: calc(100% - 36px);
+  height: calc(100% - 36px);
+  opacity: 0;
+  transition: opacity 0.25s var(--ease-soft);
+}
+.work-preview-art.is-active {
+  opacity: 1;
+}
+
+/* Detail view */
+.detail-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: color-mix(in srgb, var(--navy-deep) 45%, transparent);
+}
+.detail-panel {
+  position: fixed;
+  inset: 8px;
+  z-index: 71;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 20px;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  outline: none;
+}
+@media (min-width: 768px) {
+  .detail-panel {
+    inset: 16px;
+  }
+}
+
+.nav-indicator {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 8px;
+  height: 1px;
+  background: currentColor;
+}
+.pixel-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 96;
+  pointer-events: none;
+}
+.pixel {
+  position: absolute;
+  margin: -4px 0 0 -4px;
 }

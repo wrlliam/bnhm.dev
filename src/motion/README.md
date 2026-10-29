@@ -10,6 +10,8 @@ One rule: **never animate the same property of the same element with both librar
 | LEDs, marquee, equaliser bars                                                                                                                                                      | **CSS** keyframes (transform / opacity only), paused off-screen                             |
 
 - Values live in `tokens.ts`.
+- `LazyMotion` uses `domMax` (not `domAnimation`) because the nav indicator needs shared-layout `layoutId`; it only ships in the lazy chunk.
+- Detail view: GSAP Flip owns the panel transform; Motion `AnimatePresence` owns only the backdrop opacity.
 - GSAP, plugins and Lenis are only imported from `motion-root.tsx`, which `motion-boot.tsx` loads with `next/dynamic` after hydration, so they are not in the first-load bundle.
 - All GSAP work runs inside `useGSAP` / `gsap.matchMedia()` so it reverts on unmount and HMR.
 - Reduced motion: no Lenis, scrub, parallax, magnetic, cursor, marquee or pixel-pop; reveals become 150 ms fades.

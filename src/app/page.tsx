@@ -9,6 +9,7 @@ import { Stack } from "@/components/stack/stack";
 import { Contact } from "@/components/contact/contact";
 import { Footer } from "@/components/footer/footer";
 import { MotionBoot } from "@/motion/motion-boot";
+import { Gate } from "@/components/gate/gate";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <a href="#main" className="skip-link">
         Skip to content
       </a>
+      <Gate />
       <Header />
       <main id="main" tabIndex={-1} className="outline-none">
         <Hero />

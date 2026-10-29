@@ -3,7 +3,6 @@ import { SectionLabel } from "@/components/ui/section-label";
 import { ArrowUpRight } from "@/components/ui/icons";
 import { ProjectBody } from "./project-body";
 import { WorkArt } from "./work-art";
-import { WorkInteractions } from "./work-interactions";
 
 export function Work() {
   return (
@@ -31,6 +30,7 @@ export function Work() {
             key={p.slug}
             className="work-row border-rule border-b"
             data-work-row={p.slug}
+            data-flip-id={p.slug}
             data-index={i}
           >
             <a
@@ -81,7 +81,6 @@ export function Work() {
           </li>
         ))}
       </ol>
-      <WorkInteractions />
     </section>
   );
 }
