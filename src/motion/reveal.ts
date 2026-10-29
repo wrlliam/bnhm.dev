@@ -7,47 +7,29 @@ const START = "top 86%";
 const isAbove = (el: Element) => el.getBoundingClientRect().bottom < 0;
 
 /**
- * Full-motion reveals. Call inside a gsap.matchMedia / useGSAP context so
- * everything (SplitText included) is reverted on cleanup.
+ * Full-motion reveals. Call inside a gsap.matchMedia context and pass that
+ * context, so splits created later (on approach) are still reverted on
+ * cleanup. Returns a disposer for the observer.
  */
-export function revealFull(root: Element) {
-  // Section headings: lines rise out of masks.
-  root.querySelectorAll<HTMLElement>("[data-split]").forEach((el) => {
-    if (isAbove(el)) return;
-    SplitText.create(el, {
-      type: "lines",
-      mask: "lines",
-      autoSplit: true,
-      aria: "auto",
-      onSplit: (self) =>
-        gsap.from(self.lines, {
-          yPercent: 110,
-          duration: duration.reveal,
-          stagger: stagger.lines,
-          ease: ease.out,
-          scrollTrigger: { trigger: el, start: START, once: true },
-        }),
+export function revealFull(root: Element, ctx: gsap.Context): () => void {
+  // Text is only split as it approaches the viewport: no up-front layout work.
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        io.unobserve(entry.target);
+        const el = entry.target as HTMLElement;
+        ctx.add(() => (el.hasAttribute("data-split") ? splitHeading(el) : splitBody(el)));
+      }
+    },
+    { rootMargin: "0px 0px 60% 0px" },
+  );
+  root
+    .querySelectorAll<HTMLElement>("[data-split], [data-reveal-lines]")
+    .forEach((el) => {
+      if (!isAbove(el)) io.observe(el);
     });
-  });
-
-  // Body copy: fade up by line.
-  root.querySelectorAll<HTMLElement>("[data-reveal-lines]").forEach((el) => {
-    if (isAbove(el)) return;
-    SplitText.create(el.querySelectorAll("p"), {
-      type: "lines",
-      autoSplit: true,
-      aria: "auto",
-      onSplit: (self) =>
-        gsap.from(self.lines, {
-          autoAlpha: 0,
-          y: 14,
-          duration: duration.reveal,
-          stagger: stagger.lines * 0.6,
-          ease: ease.out,
-          scrollTrigger: { trigger: el, start: START, once: true },
-        }),
-    });
-  });
+  const dispose = () => io.disconnect();
 
   // Experience line: scrubbed, scaleY only.
   root.querySelectorAll<HTMLElement>("[data-timeline]").forEach((tl) => {
@@ -82,6 +64,43 @@ export function revealFull(root: Element) {
       ease: ease.out,
     },
   );
+  return dispose;
+}
+
+/** Section headings: lines rise out of masks. */
+function splitHeading(el: HTMLElement) {
+  SplitText.create(el, {
+    type: "lines",
+    mask: "lines",
+    autoSplit: true,
+    aria: "auto",
+    onSplit: (self) =>
+      gsap.from(self.lines, {
+        yPercent: 110,
+        duration: duration.reveal,
+        stagger: stagger.lines,
+        ease: ease.out,
+        scrollTrigger: { trigger: el, start: START, once: true },
+      }),
+  });
+}
+
+/** Body copy: fade up by line. */
+function splitBody(el: HTMLElement) {
+  SplitText.create(el.querySelectorAll("p"), {
+    type: "lines",
+    autoSplit: true,
+    aria: "auto",
+    onSplit: (self) =>
+      gsap.from(self.lines, {
+        autoAlpha: 0,
+        y: 14,
+        duration: duration.reveal,
+        stagger: stagger.lines * 0.6,
+        ease: ease.out,
+        scrollTrigger: { trigger: el, start: START, once: true },
+      }),
+  });
 }
 
 /** Reduced motion: short opacity fades only. */

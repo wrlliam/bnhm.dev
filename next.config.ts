@@ -11,6 +11,8 @@ const nextConfig: NextConfig = {
   productionBrowserSourceMaps: false,
   poweredByHeader: false,
   images: { unoptimized: true },
+  // CSS is small (Tailwind); inlining removes a render-blocking round trip.
+  experimental: { inlineCss: true },
   turbopack: {
     rules: {
       "*.css": {

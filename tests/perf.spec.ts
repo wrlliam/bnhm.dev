@@ -5,7 +5,7 @@ import { skipGate } from "./helpers";
  * Scroll trace under 4x CPU throttling: no long tasks (>50 ms) and frame
  * pacing close to 60 fps while scrolling with the wheel (Lenis path).
  */
-test("scroll performance under 4x CPU throttle", async ({ page, browserName }) => {
+test("scroll performance under 4x CPU throttle @perf", async ({ page, browserName }) => {
   test.skip(browserName !== "chromium", "CDP throttling is Chromium-only");
   await skipGate(page);
   await page.setViewportSize({ width: 412, height: 915 });

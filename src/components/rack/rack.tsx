@@ -35,26 +35,8 @@ export function Rack() {
             className="rack border-rule bg-surface relative rounded-2xl border p-3 sm:p-5"
             data-rack
           >
-            <svg
-              className="rack-rail left-1.5 sm:left-2"
-              viewBox="0 0 8 400"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              {Array.from({ length: 20 }, (_, i) => (
-                <rect key={i} x="2" y={8 + i * 20} width="4" height="4" rx="1" />
-              ))}
-            </svg>
-            <svg
-              className="rack-rail right-1.5 sm:right-2"
-              viewBox="0 0 8 400"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-              {Array.from({ length: 20 }, (_, i) => (
-                <rect key={i} x="2" y={8 + i * 20} width="4" height="4" rx="1" />
-              ))}
-            </svg>
+            <span className="rack-rail left-1.5 sm:left-2" aria-hidden="true" />
+            <span className="rack-rail right-1.5 sm:right-2" aria-hidden="true" />
             <ul className="relative space-y-2 px-3 sm:px-4" aria-label="Rack units">
               {rackUnits.map((u, i) => (
                 <li
@@ -103,25 +85,10 @@ export function Rack() {
                       {u.role}
                     </span>
                   </span>
-                  <svg
-                    width="56"
-                    height="16"
-                    viewBox="0 0 56 16"
+                  <span
+                    className="rack-vents hidden shrink-0 sm:block"
                     aria-hidden="true"
-                    className="text-rule hidden shrink-0 sm:block"
-                  >
-                    {Array.from({ length: 8 }, (_, j) => (
-                      <rect
-                        key={j}
-                        x={j * 7}
-                        y="2"
-                        width="3"
-                        height="12"
-                        rx="1.5"
-                        fill="currentColor"
-                      />
-                    ))}
-                  </svg>
+                  />
                 </li>
               ))}
             </ul>

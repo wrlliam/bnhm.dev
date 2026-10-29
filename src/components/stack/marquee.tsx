@@ -3,16 +3,9 @@ import { MarqueePlayer } from "./marquee-player";
 /** Decorative, CSS-only strip. Duplicated once for a seamless loop. */
 export function Marquee({ items }: { items: string[] }) {
   const row = (
-    <ul className="flex shrink-0 items-center">
-      {items.map((t) => (
-        <li key={t} className="flex items-center">
-          <span className="px-6 text-[clamp(28px,4vw,56px)] font-semibold tracking-[-0.03em] whitespace-nowrap">
-            {t}
-          </span>
-          <span className="bg-decor size-2 rounded-full" />
-        </li>
-      ))}
-    </ul>
+    <p className="shrink-0 px-3 text-[clamp(28px,4vw,56px)] font-semibold tracking-[-0.03em] whitespace-nowrap">
+      {items.map((t) => `${t}\u2002·\u2002`).join("")}
+    </p>
   );
   return (
     <div

@@ -12,8 +12,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "analyze": "ANALYZE=true next build --webpack",
-    "test": "playwright test",
-    "lhci": "lhci autorun"
+    "test": "playwright test --project=chromium --project=firefox --project=webkit",
+    "lhci": "lhci autorun",
+    "lhci:devtools": "lhci autorun --config=lighthouserc.devtools.json",
+    "size": "node scripts/js-size.mjs",
+    "test:perf": "playwright test --project=perf --workers=1"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

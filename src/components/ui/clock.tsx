@@ -49,12 +49,18 @@ export function Clock({ className = "" }: { className?: string }) {
   );
   const [h = "--", m = "--", s = "--"] = time ? time.split(":") : [];
   return (
-    <span className={`tabular inline-flex items-baseline gap-2 ${className}`}>
-      <time dateTime={time ? `${h}:${m}` : undefined} aria-hidden="true">
+    <span className={`clock tabular inline-flex items-baseline gap-2 ${className}`}>
+      {/* First, so its position never depends on the ticking text. */}
+      <span className="sr-only">{time ? `Local time ${h}:${m}` : "Local time"}</span>
+      <time
+        // Hidden until the first real tick: the placeholder's width differs.
+        className={`clock-time ${time ? "" : "invisible"}`}
+        dateTime={time ? `${h}:${m}` : undefined}
+        aria-hidden="true"
+      >
         {h}:{m}
         <span className="font-light">:{s}</span>
       </time>
-      <span className="sr-only">{time ? `Local time ${h}:${m}` : "Local time"}</span>
       <span>London</span>
     </span>
   );

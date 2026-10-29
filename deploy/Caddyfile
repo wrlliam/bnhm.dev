@@ -1,0 +1,31 @@
+# Static file server for the exported site (out/). Bind address only; the
+# hostname / TLS setup belongs to the reverse proxy in front of it.
+:8080 {
+	root * /srv
+	encode zstd gzip
+	file_server
+
+	# Clean URLs: /lab -> /lab.html
+	try_files {path} {path}.html {path}/index.html
+
+	# Hashed build assets never change: cache for a year.
+	@hashed path /_next/static/*
+	header @hashed Cache-Control "public, max-age=31536000, immutable"
+
+	# HTML and everything else: always revalidate.
+	@html not path /_next/static/*
+	header @html Cache-Control "public, max-age=0, must-revalidate"
+
+	header {
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "DENY"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+		-Server
+	}
+
+	handle_errors {
+		rewrite * /404.html
+		file_server
+	}
+}

@@ -47,9 +47,10 @@ export const viewport: Viewport = {
  * Runs before paint: marks JS as available (so hide-for-animation styles only
  * apply when scripts run), restores the theme choice, and flags returning
  * visitors so the gate can be skipped. If the motion runtime never arrives,
- * the gate steps aside after 6 s.
+ * the gate steps aside after 6 s. Gate text waits for fonts (max 1.5 s) so the
+ * swap cannot shift it.
  */
-const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('bnhm:theme');if(t==='dark'||t==='light')d.dataset.theme=t;if(sessionStorage.getItem('bnhm:entered'))d.classList.add('entered')}catch(e){d.classList.add('entered')}setTimeout(function(){if(!d.classList.contains('motion-ready'))d.classList.add('entered')},6000)})()`;
+const bootScript = `(function(){var d=document.documentElement;d.classList.add('js');try{var t=localStorage.getItem('bnhm:theme');if(t==='dark'||t==='light')d.dataset.theme=t;if(sessionStorage.getItem('bnhm:entered'))d.classList.add('entered')}catch(e){d.classList.add('entered')}var f=function(){d.classList.add('fonts')};document.fonts&&document.fonts.ready.then(f);setTimeout(f,1500);setTimeout(function(){if(!d.classList.contains('motion-ready'))d.classList.add('entered')},6000)})()`;
 
 const personJsonLd = {
   "@context": "https://schema.org",
