@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { animate, press, scroll } from "motion";
 import { m } from "motion/react";
-import { playHoverSound, playSound } from "@/audio/state";
+import { playHoverSound, playSound, resumeOnFirstGesture } from "@/audio/state";
 import { pixelPop, pixelPopFrom } from "./pixel-pop";
 import { media, spring } from "./tokens";
 
@@ -178,6 +178,10 @@ function NavIndicator() {
 }
 
 export function PageEffects() {
+  useEffect(() => {
+    // Gate skipped this session: earlier "sound on" resumes on the first real gesture.
+    if (document.documentElement.classList.contains("entered")) resumeOnFirstGesture();
+  }, []);
   useScrollProgress();
   usePress();
   useUiSounds();

@@ -14,7 +14,18 @@ export type SoundName =
   | "counter"
   | "arpeggio";
 
-export type PlayOptions = { index?: number; gain?: number };
+export type PlayOptions = {
+  /** Scale degree for pitched sounds (e.g. a row index). */
+  index?: number;
+  /** Gain multiplier. */
+  gain?: number;
+  /** Attack in seconds. */
+  attack?: number;
+  /** Release multiplier on the sound's length. */
+  release?: number;
+  /** Pitch shift in semitones. */
+  pitch?: number;
+};
 
 type Engine = typeof import("./engine");
 
@@ -22,6 +33,8 @@ const KEY = "bnhm:sound";
 let enabled = false;
 let engine: Engine | null = null;
 let loading: Promise<Engine> | null = null;
+let context: AudioContext | null = null;
+let watching = false;
 const listeners = new Set<() => void>();
 
 const emit = () => listeners.forEach((l) => l());
@@ -45,13 +58,30 @@ function load(): Promise<Engine> {
   return loading;
 }
 
-/** Must be called from a user gesture (click / keydown). */
+/**
+ * Must be called from a user gesture (click / keydown). The AudioContext is
+ * created synchronously inside that gesture; the engine module loads after.
+ */
 export async function enableSound(): Promise<void> {
+  if (typeof AudioContext === "undefined") return;
+  context ??= new AudioContext({ latencyHint: "interactive" });
+  void context.resume();
   const mod = engine ?? (await load());
-  mod.unlock();
+  await mod.unlock(context);
   enabled = true;
   persist(true);
+  watchVisibility();
   emit();
+}
+
+/** Hidden tab: suspend, so nothing plays and nothing queues. */
+function watchVisibility() {
+  if (watching) return;
+  watching = true;
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) engine?.suspend();
+    else if (enabled) engine?.resume();
+  });
 }
 
 export function disableSound(): void {

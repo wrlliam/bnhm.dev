@@ -1,4 +1,4 @@
-import { enableSound, playSound } from "@/audio/state";
+import { disableSound, enableSound, playSound } from "@/audio/state";
 import { gsap, ScrollTrigger, SplitText } from "./gsap";
 import { startScroll, stopScroll } from "./lenis";
 import { duration, ease, stagger } from "./tokens";
@@ -173,6 +173,8 @@ export function runIntro({ reduce }: { reduce: boolean }): IntroResult {
     if (withSound) {
       await enableSound();
       playSound("blip");
+    } else {
+      disableSound(); // remember the explicit choice
     }
     try {
       sessionStorage.setItem(ENTERED_KEY, "1");
