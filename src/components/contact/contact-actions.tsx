@@ -15,6 +15,7 @@ export function ContactActions() {
   }
 
   async function onCopy(e: React.MouseEvent<HTMLButtonElement>) {
+    const button = e.currentTarget; // capture before await
     const ok = await copyAddress(e.nativeEvent);
     clearTimeout(timer.current);
     if (!ok) {
@@ -22,6 +23,8 @@ export function ContactActions() {
       return;
     }
     playSound("blip");
+    // Pixel-pop lives in the lazy motion chunk; loads on first copy.
+    void import("@/motion/pixel-pop").then((m) => m.pixelPopFrom(button, 10));
     setCopied(true);
     setStatus("Email address copied to clipboard.");
     timer.current = setTimeout(() => {
