@@ -29,3 +29,4 @@ npm-debug.log*
 
 # Next.js-generated agent rules
 AGENTS.md
+!.env.example

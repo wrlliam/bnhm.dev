@@ -35,6 +35,11 @@ export const stack: StackGroup[] = [
       "CI/CD (Forgejo Actions)",
     ],
   },
+  {
+    name: "Agentic workflows",
+    // TODO(william): add any other agentic tools you use.
+    items: ["n8n", "Claude", "GitHub Copilot"],
+  },
   { name: "Also", items: ["3D printing", "CAD design"] },
 ];
 

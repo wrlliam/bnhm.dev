@@ -1,0 +1,18 @@
+# Never send these to the build context
+.ai
+CLAUDE.md
+AGENTS.md
+.claude
+.env*
+!.env.example
+
+node_modules
+.next
+out
+test-results
+playwright-report
+blob-report
+.lighthouseci
+.git
+.DS_Store
+*.log

@@ -1,5 +1,11 @@
-# Static file server for the exported site (out/). Bind address only; the
-# hostname / TLS setup belongs to the reverse proxy in front of it.
+# Static file server for the exported site (out/). Plain HTTP on :8080; put
+# your reverse proxy (TLS, hostname) in front of it.
+{
+	admin off
+	auto_https off
+	persist_config off
+}
+
 :8080 {
 	root * /srv
 	encode zstd gzip

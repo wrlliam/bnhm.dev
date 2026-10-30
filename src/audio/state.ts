@@ -35,6 +35,8 @@ let engine: Engine | null = null;
 let loading: Promise<Engine> | null = null;
 let context: AudioContext | null = null;
 let watching = false;
+/** Sound is on (the default) and waiting for the first gesture to start. */
+let armed = false;
 const listeners = new Set<() => void>();
 
 const emit = () => listeners.forEach((l) => l());
@@ -45,11 +47,12 @@ function persist(on: boolean) {
   } catch {}
 }
 
-function storedPreference(): boolean {
+/** Sound is on by default; only an explicit "off" from the toggle sticks. */
+export function soundPreferred(): boolean {
   try {
-    return localStorage.getItem(KEY) === "1";
+    return localStorage.getItem(KEY) !== "0";
   } catch {
-    return false;
+    return true;
   }
 }
 
@@ -85,6 +88,7 @@ function watchVisibility() {
 }
 
 export function disableSound(): void {
+  disarm();
   enabled = false;
   persist(false);
   engine?.suspend();
@@ -95,7 +99,8 @@ export function setSoundEnabled(on: boolean) {
   return on ? enableSound() : disableSound();
 }
 
-export const isSoundEnabled = () => enabled;
+/** What the toggle shows: on, or on-and-waiting-for-a-gesture. */
+export const isSoundEnabled = () => enabled || armed;
 export const getServerSnapshot = () => false;
 
 export function subscribeSound(listener: () => void) {
@@ -105,6 +110,7 @@ export function subscribeSound(listener: () => void) {
 
 /** No-op unless the user has opted in and the engine is loaded. */
 export function playSound(name: SoundName, opts?: PlayOptions) {
+  // (While armed nothing plays: the context starts on the first gesture.)
   if (!enabled || !engine) return;
   engine.play(name, opts);
 }
@@ -117,17 +123,28 @@ export function playHoverSound(name: SoundName, opts?: PlayOptions) {
 }
 
 /**
- * Returning visitor (same session, gate skipped) who previously chose sound:
- * stay silent until their first real gesture, then resume.
+ * Returning visitor (same session, gate skipped) with sound on (the default):
+ * browsers need a gesture to start audio, so resume on their first real one.
  */
 export function resumeOnFirstGesture() {
-  if (enabled || !storedPreference()) return;
-  const resume = (e: Event) => {
-    if (!e.isTrusted) return;
-    window.removeEventListener("pointerdown", resume, true);
-    window.removeEventListener("keydown", resume, true);
-    void enableSound();
-  };
+  if (enabled || armed || !soundPreferred()) return;
+  armed = true;
   window.addEventListener("pointerdown", resume, true);
   window.addEventListener("keydown", resume, true);
+  emit();
+}
+
+function resume(e: Event) {
+  if (!e.isTrusted) return;
+  // A press on the sound toggle itself is a choice, not a "first gesture".
+  if ((e.target as Element | null)?.closest?.("[data-sound-toggle]")) return;
+  disarm();
+  void enableSound();
+}
+
+function disarm() {
+  if (!armed) return;
+  armed = false;
+  window.removeEventListener("pointerdown", resume, true);
+  window.removeEventListener("keydown", resume, true);
 }

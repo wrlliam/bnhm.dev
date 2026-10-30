@@ -33,44 +33,70 @@ async function instrument(page: Page) {
 const stats = (page: Page) =>
   page.evaluate(() => (window as unknown as { __audio: Record<string, number> }).__audio);
 
-test("nothing is created or played before consent", async ({ page }) => {
+test("nothing is created or played before the first gesture", async ({ page }) => {
   await instrument(page);
   await page.goto("/");
-  await expect(page.getByRole("button", { name: "Enter silently" })).toBeVisible({
-    timeout: 4000,
-  });
-  await page.getByRole("button", { name: "Enter silently" }).click();
-  await expect(page.locator("html")).toHaveClass(/entered/);
-  // Interact a lot: hovers, clicks, toggles (theme), detail view.
-  await page.locator("[data-work-link]").first().hover();
-  await page.locator("[data-work-link]").nth(2).hover();
-  await page.getByRole("button", { name: "Dark theme" }).click();
-  await page.locator('[data-work-link="ims"]').click();
-  await page.keyboard.press("Escape");
-  await page.keyboard.type("ping");
+  await expect(page.locator("html")).toHaveClass(/entered/, { timeout: 6000 });
+  await page.mouse.move(200, 200);
+  await page.mouse.move(600, 400);
   expect(await stats(page)).toMatchObject({ contexts: 0, started: 0 });
+  // Toggle shows "on" (the default), waiting for a gesture.
+  await expect(page.locator("header [data-sound-toggle]")).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
 });
 
-test("enter with sound: context created in the gesture, sounds play, toggle works", async ({
+test("sound is on by default: first click starts it; toggle mutes and persists", async ({
   page,
 }) => {
   await instrument(page);
   await page.goto("/");
-  await page.getByRole("button", { name: "Enter with sound" }).click({ timeout: 4000 });
-  await expect(page.locator("html")).toHaveClass(/entered/, { timeout: 4000 });
-  const s1 = await stats(page);
-  expect(s1.contexts).toBe(1);
-  expect(s1.started).toBeGreaterThan(0); // blip (+ pop from the chip)
+  await expect(page.locator("html")).toHaveClass(/entered/, { timeout: 6000 });
+  await page.mouse.click(5, 400);
+  await expect.poll(async () => (await stats(page)).contexts).toBe(1);
+  await page.locator("[data-work-link]").nth(1).hover();
+  await page.mouse.move(5, 5);
+  await page.locator("[data-work-link]").nth(2).hover();
+  await expect.poll(async () => (await stats(page)).started).toBeGreaterThan(0);
   const toggle = page.locator("header [data-sound-toggle]");
-  await expect(toggle).toHaveAttribute("aria-pressed", "true");
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-pressed", "false");
   await page.waitForTimeout(300);
   const before = (await stats(page)).started;
-  await page.locator("[data-work-link]").nth(1).hover();
+  await page.locator("[data-work-link]").nth(3).hover();
   await page.keyboard.type("ping");
   expect((await stats(page)).started).toBe(before);
   expect(await page.evaluate(() => localStorage.getItem("bnhm:sound"))).toBe("0");
+});
+
+test("muting before the first gesture: the toggle press is not treated as consent", async ({
+  page,
+}) => {
+  await instrument(page);
+  await page.goto("/");
+  await expect(page.locator("html")).toHaveClass(/entered/, { timeout: 6000 });
+  const toggle = page.locator("header [data-sound-toggle]");
+  await toggle.click();
+  await expect(toggle).toHaveAttribute("aria-pressed", "false");
+  await page.mouse.click(5, 400);
+  await page.waitForTimeout(300);
+  expect((await stats(page)).contexts).toBe(0);
+});
+
+test("a muted visitor stays muted next session", async ({ page }) => {
+  await instrument(page);
+  await page.addInitScript(() => localStorage.setItem("bnhm:sound", "0"));
+  await page.goto("/");
+  await expect(page.getByText("Sound is off.")).toBeAttached({ timeout: 4000 });
+  await expect(page.locator("html")).toHaveClass(/entered/, { timeout: 6000 });
+  await page.mouse.click(5, 400);
+  await page.waitForTimeout(300);
+  expect((await stats(page)).contexts).toBe(0);
+  await expect(page.locator("header [data-sound-toggle]")).toHaveAttribute(
+    "aria-pressed",
+    "false",
+  );
 });
 
 test("voice cap holds at 6 and the hidden tab is silent", async ({ page }) => {

@@ -3,7 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { skipGate } from "./helpers";
 
 test.describe("gate", () => {
-  test("first visit: counter, choices, enter silently reveals hero @cross", async ({
+  test("first visit: real steps, eased counter, enters by itself @cross", async ({
     page,
   }) => {
     const errors: string[] = [];
@@ -13,14 +13,13 @@ test.describe("gate", () => {
     const gate = page.locator("[data-gate]");
     await expect(gate).toBeVisible();
     await expect(page.locator("#main")).toHaveJSProperty("inert", true);
-    const silent = page.getByRole("button", { name: "Enter silently" });
-    await expect(silent).toBeVisible({ timeout: 4000 });
-    await expect(page.locator("[data-gate-count]")).toHaveText("100");
-
-    const results = await new AxeBuilder({ page }).include("[data-gate]").analyze();
+    const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations.map((v) => v.id)).toEqual([]);
 
-    await silent.click();
+    // No click needed.
+    await expect(page.locator("html")).toHaveClass(/gs-done/, { timeout: 5000 });
+    for (const step of ["fonts", "page", "motion", "sound"])
+      await expect(page.locator("html")).toHaveClass(new RegExp(`gs-${step}`));
     await expect(gate).toBeHidden({ timeout: 4000 });
     await expect(page.locator("html")).toHaveClass(/entered/);
     await expect(page.locator("#main")).toHaveJSProperty("inert", false);
@@ -35,13 +34,39 @@ test.describe("gate", () => {
     await expect(gate).toBeHidden();
   });
 
-  test("reduced motion: instant enter screen", async ({ page }) => {
+  test("counter eases (slow start, slow finish) rather than stepping", async ({
+    page,
+    browserName,
+  }) => {
+    test.skip(browserName !== "chromium");
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/", { waitUntil: "commit" });
+    await page.waitForSelector("[data-gate]", { state: "attached" });
+    // Sample inside the page so test-runner latency can't thin out the data.
+    const samples = await page.evaluate(
+      () =>
+        new Promise<number[]>((resolve) => {
+          const el = document.querySelector(".gate-count-num")!;
+          const out: number[] = [];
+          const id = setInterval(() => {
+            out.push(Number(getComputedStyle(el).getPropertyValue("--gate-p")));
+            if (out.length >= 30) {
+              clearInterval(id);
+              resolve(out);
+            }
+          }, 50);
+        }),
+    );
+    // Monotonic, many distinct values (not four 25 % jumps).
+    expect(samples).toEqual([...samples].sort((a, b) => a - b));
+    expect(new Set(samples).size).toBeGreaterThan(6);
+  });
+
+  test("reduced motion: enters as soon as loading is done", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
-    const btn = page.getByRole("button", { name: "Enter silently" });
-    await expect(btn).toBeVisible({ timeout: 1000 });
-    await btn.click();
-    await expect(page.locator("[data-gate]")).toBeHidden({ timeout: 1000 });
+    await expect(page.locator("[data-gate]")).toBeHidden({ timeout: 4000 });
+    await expect(page.locator("html")).toHaveClass(/entered/);
   });
 });
 
@@ -55,6 +80,8 @@ test.describe("work detail", () => {
       await page.emulateMedia({ reducedMotion: rm });
       await page.goto("/");
       await expect(page.locator("html")).toHaveClass(/motion-ready/);
+      // The detail view is its own lazy chunk; before it mounts, rows are plain links.
+      await expect(page.locator("[data-work-list].work-enhanced")).toHaveCount(1);
       const link = page.locator('[data-work-link="api"]');
       await link.scrollIntoViewIfNeeded();
       await link.click();

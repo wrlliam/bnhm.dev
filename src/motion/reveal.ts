@@ -90,7 +90,10 @@ function splitBody(el: HTMLElement) {
   SplitText.create(el.querySelectorAll("p"), {
     type: "lines",
     autoSplit: true,
-    aria: "auto",
+    // aria-label is not allowed on <p>; plain inline spans keep the text
+    // readable as it is, so no ARIA rewriting is needed.
+    aria: "none",
+    tag: "span",
     onSplit: (self) =>
       gsap.from(self.lines, {
         autoAlpha: 0,

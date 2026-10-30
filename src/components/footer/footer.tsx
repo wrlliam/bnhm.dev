@@ -27,6 +27,11 @@ export function Footer() {
           </a>
         </div>
       </div>
+      <div className="shell pb-8">
+        <p className="ai-note text-[12px] leading-snug">
+          This site was built with the help of AI.
+        </p>
+      </div>
     </footer>
   );
 }

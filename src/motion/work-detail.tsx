@@ -153,7 +153,9 @@ export function WorkDetail() {
       // Opacity only (not visibility) so the close button can take focus immediately.
       gsap.set(content.current, { opacity: 0, y: 16 });
       const state = flipState.current;
-      const tl = gsap.timeline();
+      // Re-check focus once the panel has landed: under load, the browser's
+      // focus fix-up for the newly inert page can run after our first focus().
+      const tl = gsap.timeline({ onComplete: focusClose });
       if (state) {
         tl.add(
           Flip.from(state, {
@@ -176,9 +178,18 @@ export function WorkDetail() {
         "-=0.15",
       );
     });
+    function focusClose() {
+      if (el && !el.contains(document.activeElement)) {
+        el.querySelector<HTMLElement>("[data-detail-close]")?.focus({
+          preventScroll: true,
+        });
+      }
+    }
     el.querySelector<HTMLElement>("[data-detail-close]")?.focus({ preventScroll: true });
+    const raf = requestAnimationFrame(focusClose);
 
     return () => {
+      cancelAnimationFrame(raf);
       ctx.revert();
       outside.forEach((n) => (n.inert = false));
       startScroll();
@@ -339,7 +350,7 @@ function WorkPreview() {
         if (p) setArt(p.art);
       };
       const enter = (e: PointerEvent) => {
-        gsap.set(el, { x: e.clientX + 56, y: e.clientY - 90 });
+        gsap.set(el, { x: e.clientX + 56, y: e.clientY - 90, willChange: "transform" });
         lastX = e.clientX;
         gsap.to(el, {
           autoAlpha: 1,
@@ -349,8 +360,15 @@ function WorkPreview() {
           overwrite: "auto",
         });
       };
+      // will-change only while the card is on screen.
       const leave = () =>
-        gsap.to(el, { autoAlpha: 0, scale: 0.9, duration: 0.25, overwrite: "auto" });
+        gsap.to(el, {
+          autoAlpha: 0,
+          scale: 0.9,
+          duration: 0.25,
+          overwrite: "auto",
+          onComplete: () => gsap.set(el, { willChange: "auto" }),
+        });
 
       gsap.set(el, { autoAlpha: 0, scale: 0.9 });
       list.addEventListener("pointermove", move, { passive: true });

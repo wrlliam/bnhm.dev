@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { domMax, LazyMotion } from "motion/react";
 import { gsap, ScrollTrigger, useGSAP } from "./gsap";
 import { LenisProvider } from "./lenis-provider";
+import { getLenis } from "./lenis";
 import { revealFull, revealReduced } from "./reveal";
 import { runIntro } from "./intro";
 import { magneticButtons, magneticChars } from "./magnetic";
@@ -54,12 +55,22 @@ export default function MotionRoot() {
 
   useEffect(() => {
     // Positions shift once fonts land and content-visibility sections render.
-    let raf = 0;
+    // Refresh only when the page height really changed, debounced, and never
+    // mid-scroll (a refresh recalculates every trigger in one go).
+    ScrollTrigger.config({ ignoreMobileResize: true, limitCallbacks: true });
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let lastHeight = document.body.scrollHeight;
     const refresh = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => ScrollTrigger.refresh());
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (getLenis()?.isScrolling) return refresh();
+        const h = document.body.scrollHeight;
+        if (h === lastHeight) return;
+        lastHeight = h;
+        ScrollTrigger.refresh();
+      }, 220);
     };
-    void document.fonts.ready.then(refresh);
+    void document.fonts.ready.then(() => ScrollTrigger.refresh());
     const ro = new ResizeObserver(refresh);
     ro.observe(document.body);
 
@@ -68,7 +79,7 @@ export default function MotionRoot() {
     };
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
-      cancelAnimationFrame(raf);
+      clearTimeout(timer);
       ro.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
     };

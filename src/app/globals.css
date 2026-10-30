@@ -104,7 +104,6 @@ html {
   background: var(--bg);
   color: var(--ink);
   -webkit-text-size-adjust: 100%;
-  text-rendering: optimizeLegibility;
   scroll-padding-top: calc(var(--header-h) + 16px);
 }
 html:not(.lenis) {
@@ -192,7 +191,21 @@ html.lenis body {
 }
 .below-fold {
   content-visibility: auto;
-  contain-intrinsic-size: auto 900px;
+  /* Close to real heights, so first render barely changes the page length
+     (fewer ScrollTrigger refreshes, no scrollbar jumps). "auto" remembers. */
+  contain-intrinsic-size: auto var(--cis, 1000px);
+}
+#rack {
+  --cis: 1000px;
+}
+#experience {
+  --cis: 2000px;
+}
+#education {
+  --cis: 1500px;
+}
+#stack {
+  --cis: 1200px;
 }
 
 /* ---------- Components ---------- */
@@ -323,6 +336,7 @@ html.lenis body {
 }
 .js .marquee[data-playing="true"] .marquee-track {
   animation: marquee 60s linear infinite;
+  will-change: transform; /* only while it is actually running */
 }
 @keyframes marquee {
   to {
@@ -397,9 +411,9 @@ html.lenis body {
 
 /* Header */
 .site-header {
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: saturate(1.4) blur(12px);
-  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  /* Near-opaque instead of backdrop-filter: a blurred backdrop re-rasterises
+     every scrolled frame, which is the single most expensive thing on mobile. */
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--rule) 60%, transparent);
 }
 .scroll-progress {
@@ -488,15 +502,32 @@ html.lenis body {
 }
 
 /* ---------- Gate ---------- */
+@property --gate-p {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
 .gate {
   display: none;
+}
+/* Progress lives on the gate only, so its transition restyles just the gate. */
+html[data-gs="1"] .gate {
+  --gate-p: 25;
+}
+html[data-gs="2"] .gate {
+  --gate-p: 50;
+}
+html[data-gs="3"] .gate {
+  --gate-p: 75;
+}
+html[data-gs="4"] .gate {
+  --gate-p: 100;
 }
 .js:not(.entered) .gate {
   position: fixed;
   inset: 0;
   z-index: 90;
-  display: grid;
-  place-items: center;
+  display: block;
   color: var(--paper);
 }
 .js:not(.entered) body {
@@ -517,25 +548,118 @@ html.lenis body {
 }
 .gate-inner {
   position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+  padding: 28px var(--gutter);
+  /* Text waits for Figtree itself (max 2.5 s) so the swap cannot shift it. */
   visibility: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 24px;
-  text-align: center;
 }
 .fonts .gate-inner {
   visibility: visible;
 }
+.gate-top {
+  display: flex;
+  justify-content: space-between;
+  color: var(--sky);
+}
+.gate-centre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
 .gate-count {
-  font-size: clamp(72px, 14vw, 160px);
+  display: flex;
+  align-items: flex-start;
+  font-size: clamp(96px, 22vw, 240px);
   font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+.gate-count-num {
+  /* Fixed box (fits "100"), digits right-aligned: growing never shifts layout. */
+  display: inline-block;
+  width: 1.75em;
+  text-align: right;
+  counter-reset: gate var(--gate-p);
+  /* Fallback path only (no Web Animations): ease between real steps. */
+  transition: --gate-p 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.gate-count-num::before {
+  content: counter(gate, decimal-leading-zero);
+}
+.gate-count-unit {
+  margin: 0.12em 0 0 0.08em;
+  font-size: 0.22em;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--sky);
+}
+@media (max-width: 480px) {
+  .gate-steps {
+    display: grid !important;
+    grid-template-columns: repeat(2, auto);
+  }
+}
+.gate-steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 26px;
+}
+.gate-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: color-mix(in srgb, var(--sky) 55%, var(--navy-deep));
+  transition: color 0.4s var(--ease-soft);
+}
+.gate-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--navy-700);
+  transition:
+    background-color 0.3s var(--ease-soft),
+    transform 0.4s var(--ease-soft);
+}
+.gs-fonts [data-step="fonts"],
+.gs-page [data-step="page"],
+.gs-motion [data-step="motion"],
+.gs-sound [data-step="sound"] {
+  color: var(--sky);
+}
+.gs-fonts [data-step="fonts"] .gate-led,
+.gs-page [data-step="page"] .gate-led,
+.gs-motion [data-step="motion"] .gate-led,
+.gs-sound [data-step="sound"] .gate-led {
+  background: var(--sky);
+  transform: scale(1.15);
+}
+/* Waiting LED breathes (opacity only). */
+.gate-steps li .gate-led {
+  animation: gate-wait 1.2s ease-in-out infinite alternate;
+}
+.gs-fonts [data-step="fonts"] .gate-led,
+.gs-page [data-step="page"] .gate-led,
+.gs-motion [data-step="motion"] .gate-led,
+.gs-sound [data-step="sound"] .gate-led {
+  animation: none;
+}
+@keyframes gate-wait {
+  to {
+    opacity: 0.35;
+  }
+}
+.gate-bottom {
+  display: grid;
+  gap: 22px;
+  justify-items: center;
 }
 .gate-bar {
-  width: min(280px, 70vw);
+  width: 100%;
   height: 1px;
   background: var(--navy-700);
   overflow: hidden;
@@ -544,26 +668,16 @@ html.lenis body {
   display: block;
   height: 100%;
   background: var(--sky);
-  transform: scaleX(0);
   transform-origin: left center;
+  transform: scaleX(calc(var(--gate-p) / 100));
+  transition: --gate-p 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }
-.gate-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  margin-top: 12px;
-  visibility: hidden;
-  opacity: 0;
-}
-.gate[data-ready="true"] .gate-actions {
-  visibility: visible;
+.gate-note {
+  color: color-mix(in srgb, var(--sky) 80%, var(--navy-deep));
+  text-align: center;
 }
 .gate :focus-visible {
   outline-color: var(--sky);
-}
-.gate .btn-ghost:hover {
-  background: var(--navy-700);
 }
 
 /* Press feedback that composes with GSAP-owned transforms (individual `scale`). */
@@ -642,7 +756,7 @@ html.scroll-locked body {
     transform 0.5s var(--ease-soft);
 }
 @media (hover: hover) and (pointer: fine) {
-  .work-list:has(.work-row:hover) .work-row:not(:hover) {
+  .work-list:hover:has(.work-row:hover) .work-row:not(:hover) {
     opacity: 0.35;
   }
   .work-row:hover .work-title {
@@ -735,4 +849,9 @@ html.scroll-locked body {
 /* The ticking clock waits for the web font so the swap cannot shift it. */
 .js:not(.fonts) .clock {
   visibility: hidden;
+}
+
+/* Faint, but still AA (sky at 70% on navy ≈ 6.7:1). */
+.ai-note {
+  color: color-mix(in srgb, var(--sky) 70%, var(--inv-bg));
 }

@@ -20,7 +20,7 @@ export function Stack() {
             >
               Tools I reach for.
             </h2>
-            <div className="mt-14 grid gap-12 md:mt-20 md:grid-cols-3 md:gap-8">
+            <div className="mt-14 grid gap-12 sm:grid-cols-2 md:mt-20 md:gap-x-8 md:gap-y-14">
               {stack.map((g) => (
                 <div key={g.name}>
                   <h3 className="label text-ink-2">{g.name}</h3>

@@ -35,6 +35,20 @@ test("motion runtime boots without console errors and Lenis drives ScrollTrigger
   expect(errors).toEqual([]);
 });
 
+test("split body copy stays valid and readable", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  await expect(page.locator("html")).toHaveClass(/motion-ready/);
+  await page.locator("#about [data-reveal-lines]").scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1500);
+  const p = page.locator("#about [data-reveal-lines] p").first();
+  await expect(p).not.toHaveAttribute("aria-label", /.*/);
+  await expect(p).toContainText("self-taught");
+  const { default: AxeBuilder } = await import("@axe-core/playwright");
+  const axe = await new AxeBuilder({ page }).include("#about").analyze();
+  expect(axe.violations.map((v) => v.id)).toEqual([]);
+});
+
 test("reduced motion: native scroll, no Lenis, content still revealed", async ({
   page,
 }) => {
