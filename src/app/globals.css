@@ -564,6 +564,7 @@ html[data-gs="4"] .gate {
   justify-content: space-between;
   color: var(--sky);
 }
+/* Classic (backup) loader: .gate-centre, .gate-count, .gate-steps, .gate-bar */
 .gate-centre {
   display: flex;
   flex-direction: column;
@@ -689,6 +690,243 @@ html[data-gs="4"] .gate {
 }
 .gate :focus-visible {
   outline-color: var(--sky);
+}
+
+/* ---------- Boot loader (current gate) ----------
+   One eased --gate-p (0–100) drives everything. Each unit has a threshold
+   --t; --on ramps 0→1 over the 14 % after it. Transform/opacity only. */
+.gate-boot .gate-inner {
+  visibility: visible; /* the rack is not text: show it from the first paint */
+}
+.js:not(.fonts) .gate-boot :is(.label, .boot-name, .boot-count, .boot-log, .gate-note) {
+  visibility: hidden; /* text waits for Figtree, so the swap cannot shift it */
+}
+.boot-centre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+}
+.boot-rack {
+  position: relative;
+  display: grid;
+  gap: 8px;
+  width: min(420px, 80vw);
+  padding: 14px 22px;
+  border: 1px solid var(--navy-700);
+  border-radius: 14px;
+  overflow: hidden;
+}
+/* Slow scan line sweeping the rack (compositor-only). */
+.boot-rack::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 30%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(191 224 234 / 0.07),
+    transparent
+  );
+  transform: translateY(-100%);
+  animation: boot-scan 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  pointer-events: none;
+}
+@keyframes boot-scan {
+  to {
+    transform: translateY(440%);
+  }
+}
+.boot-rail {
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--navy-700) 0 3px,
+    transparent 3px 14px
+  );
+}
+.boot-rail-l {
+  left: 8px;
+}
+.boot-rail-r {
+  right: 8px;
+}
+.boot-unit {
+  --on: clamp(0, (var(--gate-p) - var(--t)) / 14, 1);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 8px;
+  background: #0b2238;
+  border: 1px solid var(--navy-700);
+  /* Fallback path only (no Web Animations): ease between real steps. */
+  transition: --gate-p 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+}
+/* Powered outline fades in over the dim one. */
+.boot-unit::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--petrol-soft);
+  border-radius: inherit;
+  opacity: calc(var(--on) * 0.75);
+}
+.boot-leds {
+  display: inline-flex;
+  gap: 6px;
+}
+.boot-led {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--sky);
+  opacity: calc(0.12 + 0.88 * var(--on));
+}
+.boot-led-b {
+  background: var(--petrol-soft);
+}
+/* The second LED shows disk activity. */
+.boot-unit .boot-led-b {
+  animation: boot-blink 1.1s steps(1, end) infinite;
+  animation-delay: calc(var(--t) * -37ms);
+}
+@keyframes boot-blink {
+  50% {
+    visibility: hidden;
+  }
+}
+.boot-name {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sky);
+  opacity: calc(0.35 + 0.65 * var(--on));
+  white-space: nowrap;
+}
+.boot-name span {
+  margin-left: 6px;
+  color: color-mix(in srgb, var(--sky) 70%, var(--navy-deep));
+}
+.boot-drive {
+  width: 34%;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--navy-700);
+  overflow: hidden;
+}
+.boot-drive span {
+  display: block;
+  height: 100%;
+  background: var(--sky);
+  transform-origin: left center;
+  transform: scaleX(var(--on));
+}
+.boot-count {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--paper);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.boot-count .label {
+  color: var(--sky);
+}
+.boot-num {
+  width: 1.8em;
+  text-align: right;
+}
+.boot-pct {
+  font-size: 0.5em;
+  color: var(--sky);
+}
+.boot-bottom {
+  gap: 18px;
+}
+.boot-log {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 6px 28px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--sky) 75%, var(--navy-deep));
+}
+@media (max-width: 560px) {
+  .boot-log {
+    grid-template-columns: repeat(2, auto);
+  }
+}
+.boot-log li {
+  display: grid;
+  grid-template-columns: auto 2em;
+  align-items: center;
+  gap: 8px;
+}
+/* Dots and "ok" share one cell, so finishing a step moves nothing. */
+.boot-log-dots,
+.boot-log-state {
+  grid-area: 1 / 2;
+}
+.boot-log-dots {
+  display: inline-flex;
+  gap: 3px;
+}
+.boot-log-dots span {
+  width: 3px;
+  height: 3px;
+  border-radius: 1px;
+  background: currentColor;
+  animation: boot-wait 0.9s ease-in-out infinite alternate;
+}
+.boot-log-dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.boot-log-dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes boot-wait {
+  to {
+    opacity: 0.2;
+  }
+}
+.boot-log-state {
+  color: var(--sky);
+}
+.boot-log-state::after {
+  content: "";
+}
+.gs-fonts [data-step="fonts"] .boot-log-dots,
+.gs-page [data-step="page"] .boot-log-dots,
+.gs-motion [data-step="motion"] .boot-log-dots,
+.gs-sound [data-step="sound"] .boot-log-dots {
+  visibility: hidden;
+}
+.gs-fonts [data-step="fonts"] .boot-log-state::after,
+.gs-page [data-step="page"] .boot-log-state::after,
+.gs-motion [data-step="motion"] .boot-log-state::after,
+.gs-sound [data-step="sound"] .boot-log-state::after {
+  content: "ok";
+}
+.gs-fonts [data-step="fonts"],
+.gs-page [data-step="page"],
+.gs-motion [data-step="motion"],
+.gs-sound [data-step="sound"] {
+  color: var(--sky);
 }
 
 /* Press feedback that composes with GSAP-owned transforms (individual `scale`). */

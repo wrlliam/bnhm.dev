@@ -69,9 +69,9 @@ var g=document.querySelector('[data-gate]');
 var calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
 if(!g||d.classList.contains('entered')||calm||!g.animate)return;
 var D=1700;
-var els=g.querySelectorAll('.gate-count-num,.gate-bar span');
+var els=g.querySelectorAll('[data-gate-p]');
 try{for(var i=0;i<els.length;i++)anims.push(els[i].animate({'--gate-p':[0,100]},{duration:D,easing:'cubic-bezier(0.65,0,0.35,1)',fill:'forwards'}))}catch(e){anims=[];return}
-setTimeout(function(){if(n<4&&anims.length){anims.forEach(function(a){a.pause()});held=true}},D*0.84);
+setTimeout(function(){if(n<4&&anims.length){anims.forEach(function(a){a.pause()});held=true}},D*0.74);
 anims[0].finished.then(finish,finish);
 });
 setTimeout(function(){if(!d.classList.contains('motion-ready'))d.classList.add('entered')},6000);

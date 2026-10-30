@@ -10,6 +10,9 @@ import { Contact } from "@/components/contact/contact";
 import { Footer } from "@/components/footer/footer";
 import { MotionBoot } from "@/motion/motion-boot";
 import { Gate } from "@/components/gate/gate";
+// Backup loader (the previous counter + step lights). To restore it, comment
+// out <Gate /> below and uncomment <GateClassic /> and this import.
+// import { GateClassic } from "@/components/gate/gate-classic";
 
 export default function Home() {
   return (
@@ -18,6 +21,7 @@ export default function Home() {
         Skip to content
       </a>
       <Gate />
+      {/* <GateClassic /> */}
       <Header />
       <main id="main" tabIndex={-1} className="outline-none">
         <Hero />

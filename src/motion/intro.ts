@@ -58,6 +58,9 @@ export function runIntro({ reduce }: { reduce: boolean }): IntroResult {
   const pieces = gsap.utils.toArray<HTMLElement>(
     gate.querySelectorAll("[data-gate-piece]"),
   );
+  const units = gsap.utils.toArray<HTMLElement>(
+    gate.querySelectorAll("[data-gate-unit]"),
+  );
   const status = $("[data-gate-status]", gate);
   const note = $(".gate-note", gate);
   if (note && !soundPreferred())
@@ -72,6 +75,19 @@ export function runIntro({ reduce }: { reduce: boolean }): IntroResult {
     gsap.set(header, { yPercent: -100 });
     gsap.set(chip, { scale: 0.6, autoAlpha: 0 });
     gsap.set([top, bottom], { clipPath: "inset(0% 0% 0% 0%)" });
+    // Boot loader: units power down and retract, top to bottom, first.
+    if (units.length) {
+      intro.fromTo(
+        units,
+        { clipPath: "inset(0% 0% 0% 0%)" },
+        {
+          clipPath: "inset(0% 100% 0% 0%)",
+          duration: 0.34,
+          stagger: 0.045,
+          ease: "power3.in",
+        },
+      );
+    }
     intro
       .to(pieces, {
         autoAlpha: 0,
