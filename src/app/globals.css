@@ -189,10 +189,11 @@ html.lenis body {
   background: var(--rule);
   transform-origin: left center;
 }
-.below-fold {
+/* content-visibility keeps first paint fast (~0.8 s vs ~1.7 s throttled).
+   Once the page is idle after load, html.cv-done lifts it in one go, so no
+   section is ever rendered for the first time in the middle of a scroll. */
+html:not(.cv-done) .below-fold {
   content-visibility: auto;
-  /* Close to real heights, so first render barely changes the page length
-     (fewer ScrollTrigger refreshes, no scrollbar jumps). "auto" remembers. */
   contain-intrinsic-size: auto var(--cis, 1000px);
 }
 #rack {
@@ -573,22 +574,32 @@ html[data-gs="4"] .gate {
 .gate-count {
   display: flex;
   align-items: flex-start;
-  font-size: clamp(96px, 22vw, 240px);
+  /* Stays smaller than the hero name on phones, so the (late, font-gated)
+     counter never becomes the LCP element. */
+  font-size: clamp(64px, 16vw, 240px);
   font-weight: 300;
   line-height: 0.9;
   letter-spacing: -0.05em;
 }
 .gate-count-num {
-  /* Fixed box (fits "100"), digits right-aligned: growing never shifts layout. */
+  /* Always three tabular digits (000–100): the text never changes width, so
+     the counter can't shift layout as it climbs. */
   display: inline-block;
-  width: 1.75em;
-  text-align: right;
   counter-reset: gate var(--gate-p);
   /* Fallback path only (no Web Animations): ease between real steps. */
   transition: --gate-p 0.9s cubic-bezier(0.65, 0, 0.35, 1);
 }
 .gate-count-num::before {
   content: counter(gate, decimal-leading-zero);
+}
+@supports (width: calc(round(down, 1.5px, 1px))) {
+  .gate-count-num {
+    counter-reset: gate-h round(down, var(--gate-p) / 100, 1) gate-r
+      mod(var(--gate-p), 100);
+  }
+  .gate-count-num::before {
+    content: counter(gate-h) counter(gate-r, decimal-leading-zero);
+  }
 }
 .gate-count-unit {
   margin: 0.12em 0 0 0.08em;

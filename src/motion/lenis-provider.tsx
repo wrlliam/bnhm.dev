@@ -19,7 +19,14 @@ export function LenisProvider() {
     let tick: ((time: number) => void) | null = null;
 
     function start() {
-      lenis = new Lenis({ autoRaf: false, lerp: 0.1, anchors: false });
+      // lerp 0.15: smooth, but follows wheel and trackpad input closely instead
+      // of drifting behind it.
+      lenis = new Lenis({
+        autoRaf: false,
+        lerp: 0.15,
+        wheelMultiplier: 1,
+        anchors: false,
+      });
       lenis.on("scroll", ScrollTrigger.update);
       tick = (time) => lenis?.raf(time * 1000);
       gsap.ticker.add(tick);

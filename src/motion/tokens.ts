@@ -10,7 +10,9 @@ export const ease = {
 export const duration = {
   micro: 0.2,
   ui: 0.4,
-  reveal: 0.95,
+  reveal: 0.7,
+  /** Repeated items (chips, cards, timeline entries). */
+  batch: 0.45,
   hero: 1.2,
   /** Reduced-motion fades. */
   fade: 0.15,
@@ -19,8 +21,8 @@ export const duration = {
 export const stagger = {
   chars: 0.025,
   words: 0.06,
-  lines: 0.09,
-  blocks: 0.1,
+  lines: 0.07,
+  blocks: 0.06,
 } as const;
 
 export const spring = {

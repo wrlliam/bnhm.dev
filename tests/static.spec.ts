@@ -55,10 +55,6 @@ test("screenshots", async ({ page }, info) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto("/");
       await page.evaluate(() => document.fonts.ready);
-      // content-visibility skips off-screen rendering, which blanks full-page captures.
-      await page.addStyleTag({
-        content: ".below-fold{content-visibility:visible!important}",
-      });
       await page.screenshot({
         path: `${process.env.SCREENSHOTS_DIR ?? info.outputDir}/${theme}-${width}.png`,
         fullPage: true,

@@ -85,7 +85,9 @@ test.describe("work detail", () => {
       const link = page.locator('[data-work-link="api"]');
       await link.scrollIntoViewIfNeeded();
       await link.click();
-      const dialog = page.getByRole("dialog", { name: "api.bnhm.dev" });
+      // Title comes from content (editable), so read it from the row.
+      const title = (await link.locator(".work-title").textContent())!.trim();
+      const dialog = page.getByRole("dialog", { name: title });
       await expect(dialog).toBeVisible();
       await expect(page).toHaveURL(/\?p=api/);
       await expect(page.getByRole("button", { name: "Close project" })).toBeFocused();

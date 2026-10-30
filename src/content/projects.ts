@@ -35,7 +35,7 @@ export const projects: Project[] = [
   },
   {
     slug: "api",
-    title: "api.bnhm.dev",
+    title: "Personal API",
     meta: "Personal project",
     tech: ["NestJS", "Drizzle ORM", "Docker", "Kubernetes"],
     summary:
@@ -47,18 +47,18 @@ export const projects: Project[] = [
     ],
     art: "shield",
   },
-  {
-    slug: "ims",
-    title: "IMS",
-    meta: "Inventory Management System",
-    tech: ["NestJS", "Next.js", "PostgreSQL", "DaisyUI"],
-    summary: "Inventory management with a NestJS back end and a Next.js front end.",
-    details: [
-      "Drizzle ORM on PostgreSQL, with pagination and search.",
-      "A DaisyUI front end with drawers, modals and optimistic updates.",
-    ],
-    art: "grid",
-  },
+  // {
+  //   slug: "ims",
+  //   title: "IMS",
+  //   meta: "Inventory Management System",
+  //   tech: ["NestJS", "Next.js", "PostgreSQL", "DaisyUI"],
+  //   summary: "Inventory management with a NestJS back end and a Next.js front end.",
+  //   details: [
+  //     "Drizzle ORM on PostgreSQL, with pagination and search.",
+  //     "A DaisyUI front end with drawers, modals and optimistic updates.",
+  //   ],
+  //   art: "grid",
+  // },
   {
     slug: "gohop",
     title: "goHop",

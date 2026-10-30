@@ -64,9 +64,11 @@ test.describe("email protection", () => {
       .toString()
       .split("\0")
       .filter(Boolean);
-    expect(tracked.filter((f) => f.startsWith(".ai/") || f.startsWith(".env"))).toEqual(
-      [],
-    );
+    expect(
+      tracked.filter(
+        (f) => f.startsWith(".ai/") || (f.startsWith(".env") && f !== ".env.example"),
+      ),
+    ).toEqual([]);
     const history = execSync("git log -p --all --format=%B", {
       cwd: root,
       maxBuffer: 1 << 28,

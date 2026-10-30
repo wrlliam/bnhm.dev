@@ -71,6 +71,17 @@ export default function MotionRoot() {
       }, 220);
     };
     void document.fonts.ready.then(() => ScrollTrigger.refresh());
+
+    // Render the deferred (content-visibility) sections once, while idle,
+    // instead of section by section mid-scroll.
+    const ric =
+      typeof requestIdleCallback === "function"
+        ? requestIdleCallback
+        : (cb: () => void) => window.setTimeout(cb, 300);
+    const cvIdle = ric(() => {
+      document.documentElement.classList.add("cv-done");
+      refresh();
+    });
     const ro = new ResizeObserver(refresh);
     ro.observe(document.body);
 
@@ -80,6 +91,8 @@ export default function MotionRoot() {
     document.addEventListener("visibilitychange", onVisibility);
     return () => {
       clearTimeout(timer);
+      if (typeof cancelIdleCallback === "function") cancelIdleCallback(cvIdle);
+      else clearTimeout(cvIdle);
       ro.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
     };
