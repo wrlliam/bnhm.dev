@@ -40,6 +40,10 @@ for (const theme of ["light", "dark"] as const) {
     await skipGate(page);
     await page.emulateMedia({ colorScheme: theme, reducedMotion: "reduce" });
     await page.goto("/");
+    // Let the motion runtime arrive and its (150 ms) fades finish: axe would
+    // otherwise measure contrast on half-transparent text.
+    await expect(page.locator("html")).toHaveClass(/motion-ready/);
+    await page.waitForTimeout(800);
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([]);
   });

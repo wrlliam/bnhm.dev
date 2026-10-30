@@ -1,6 +1,8 @@
 import { gsap, ScrollTrigger, SplitText } from "./gsap";
 import { duration, ease, stagger } from "./tokens";
 
+// Reveals use opacity, never autoAlpha/visibility: hidden content would drop
+// out of the accessibility tree until scrolled to.
 // Start a touch before the element enters, so nothing is still animating
 // when you reach it.
 const START = "top 94%";
@@ -59,8 +61,8 @@ export function revealFull(root: Element, ctx: gsap.Context): () => void {
   batch(
     root,
     "[data-reveal-lines] > p",
-    { autoAlpha: 0, y: 14 },
-    { autoAlpha: 1, y: 0, duration: duration.reveal, ease: ease.out },
+    { opacity: 0, y: 14 },
+    { opacity: 1, y: 0, duration: duration.reveal, ease: ease.out },
   );
   batch(
     root,
@@ -71,8 +73,8 @@ export function revealFull(root: Element, ctx: gsap.Context): () => void {
   batch(
     root,
     "[data-batch-item]",
-    { autoAlpha: 0, y: 12 },
-    { autoAlpha: 1, y: 0, duration: duration.batch, ease: ease.out },
+    { opacity: 0, y: 12 },
+    { opacity: 1, y: 0, duration: duration.batch, ease: ease.out },
   );
   return dispose;
 }
@@ -100,8 +102,8 @@ export function revealReduced(root: Element) {
   batch(
     root,
     "[data-split], [data-reveal-lines], [data-batch-item]",
-    { autoAlpha: 0 },
-    { autoAlpha: 1, duration: duration.fade, ease: "none" },
+    { opacity: 0 },
+    { opacity: 1, duration: duration.fade, ease: "none" },
   );
 }
 
