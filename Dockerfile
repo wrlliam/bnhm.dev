@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.10
-# bnhm.dev: static Next.js export served by Caddy as a non-root user.
+# bnhm.dev: static Next.js export served by `serve` on :5000 as a non-root user.
+# TLS and hostname are handled by an external reverse proxy.
 
 # ---------- build ----------
 FROM node:22-alpine AS build
@@ -15,25 +16,15 @@ COPY . .
 RUN --mount=type=secret,id=contact_email,env=CONTACT_EMAIL,required=false \
     npm run build
 
-# ---------- caddy binary without file capabilities ----------
-# The stock binary carries cap_net_bind_service as a file capability, which
-# no-new-privileges + cap_drop: ALL refuse to exec. We bind :8080, so a plain
-# copy (which drops the xattr) is all we need.
-FROM caddy:2-alpine AS caddy
-RUN cp /usr/bin/caddy /caddy
-
 # ---------- runtime ----------
-FROM alpine:3.22
-# mailcap: MIME types (e.g. woff2) for the file server.
-RUN apk add --no-cache mailcap \
- && addgroup -S -g 10001 web && adduser -S -D -H -u 10001 -G web web \
- && mkdir -p /tmp/caddy && chown web:web /tmp/caddy
-COPY --from=caddy /caddy /usr/bin/caddy
-ENV XDG_CONFIG_HOME=/tmp/caddy XDG_DATA_HOME=/tmp/caddy
-COPY deploy/Caddyfile /etc/caddy/Caddyfile
-COPY --from=build --chown=web:web /app/out /srv
-USER web
-EXPOSE 8080
+FROM node:22-alpine
+ENV NODE_ENV=production
+RUN npm install -g --no-audit --no-fund serve@14.2.6 && npm cache clean --force
+WORKDIR /app
+COPY deploy/serve.json /app/serve.json
+COPY --from=build --chown=node:node /app/out /app/out
+USER node
+EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget -q --spider http://127.0.0.1:8080/ || exit 1
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+  CMD wget -q --spider http://127.0.0.1:5000/ || exit 1
+CMD ["serve", "out", "-l", "tcp://0.0.0.0:5000", "-c", "/app/serve.json", "--no-clipboard"]
